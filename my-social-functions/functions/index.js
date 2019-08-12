@@ -1,7 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
-const serviceAccount = require("./my-social-7b8185040aea.json");
+const serviceAccount = require("./keys/my-social-7b8185040aea.json");
 
 // To use the admin, we need to initialize our firebase app
 admin.initializeApp({
