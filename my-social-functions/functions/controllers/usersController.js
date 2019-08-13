@@ -1,8 +1,7 @@
-const { db } = require('../utils/admin');
+const { admin, db } = require('../utils/admin');
 
 // Firebase App Config
 const config = require('../utils/config');
-
 const firebase = require('firebase');
 firebase.initializeApp(config);
 
@@ -10,9 +9,18 @@ firebase.initializeApp(config);
 const validateSignupInput = require("../validation/validateSignupInput");
 const validateLoginInput = require("../validation/validateLoginInput");
 
+// Busboy - Image Upload
+const Busboy = require('busboy');
 
-let token, userId;
+// Default packages available in Node
+const path = require('path');
+const os = require('os');
+const fs = require('fs');
+
+
+
 // Register User Controller
+let token, userId;
 exports.registerUser = (req, res) => {
 
     // Form validation
@@ -29,6 +37,9 @@ exports.registerUser = (req, res) => {
         confirmPassword: req.body.confirmPassword,
         username: req.body.username
     }
+
+    // Default image for every user that signs up
+    const noImg = 'no-image.png';
 
     db
         .doc(`/users/${newUser.username}`)
@@ -57,6 +68,7 @@ exports.registerUser = (req, res) => {
                 username: newUser.username,
                 email: newUser.email,
                 createdAt: new Date().toISOString(),
+                imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noImg}?alt=media`,
                 userId
             };
 
@@ -116,4 +128,67 @@ exports.loginUser = (req, res) => {
                 return res.status(500).json({ error: err.code});
             }
         });
+}
+
+
+// User Upload Image Controller
+exports.uploadImage = (req, res) => {
+    const busboy = new Busboy({ headers: req.headers });
+
+    let imageFileName;
+    let imageToBeUploaded = {};
+
+    // on file event (check busboy docs)
+    busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+        // eg: myimage.png or my.image.png or my.image2.jpg
+
+        // Check to make sure file is either jpg or png, and not any other type (txt,json,etc)
+        if(mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
+            return res.status(400).json({ error: 'Incorrect file type submitted for upload!'});
+        }
+
+        // extension of image file
+        const imageExtension = filename.split('.')[filename.split('.').length - 1];
+
+        // image file name - random number to store in our firebase storage - 13214214.png
+        imageFileName = `${Math.round(Math.random() * 10000000)}.${imageExtension}`;
+
+        // file path in our cloud function
+        const filepath = path.join(os.tmpdir(), imageFileName);
+
+        // our image file that we will upload
+        imageToBeUploaded = { filepath, mimetype };
+
+        // use filesystem library to create this file
+        file.pipe(fs.createWriteStream(filepath));
+    });
+
+    // once we get done with the upload event from user, we need to upload our file to firebase
+    busboy.on('finish', () => {
+
+        // upload the image file to our storage bucket
+        admin.storage().bucket('my-social-ff134.appspot.com/').upload(imageToBeUploaded.filepath, {
+            resumable: false,
+            metadata: {
+                metadata: {
+                    contentType: imageToBeUploaded.mimetype
+                }                
+            }
+        })
+        // upload() returns a promise
+        .then(() => {
+            // need to construct our image url to add to our user document in our db
+            const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media` // by adding 'alt=media' it shows it on our browser instead of downloading it to our desktop
+            return db.doc(`/users/${req.user.username}`).update({ imageUrl });  //req.user is from the auth middleware
+        })
+        .then(() => {
+            res.json({ message: 'Image uploaded successfully '});
+        })
+        .catch(err => {
+            console.error(err);
+            return res.status(500).json({ error: err.code });
+        });
+    });
+
+    busboy.end(req.rawBody);
 }

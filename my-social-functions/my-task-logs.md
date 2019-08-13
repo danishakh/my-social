@@ -58,6 +58,7 @@ This document contains the list of tasks and the order in which I completed the 
 - Return the user with the corresponding token from our firebase db
 - Add the user's username to the request object and call `next()` to move forward with the actual resource request
 
+
 ## Refactor/Organize Code
 - Create controllers to handle the work for each route
     - users controller
@@ -69,3 +70,15 @@ This document contains the list of tasks and the order in which I completed the 
 - Make sure validation function files are required in the correct controllers
 - Make sure all controllers and firebaseAuth files require needed objects (admin, db)
 - Make sure to import all these files into our `index.js`
+
+
+## Image Upload
+- `npm install --save busboy`
+- Use buyboy to process our uploading to our firebase storage library
+- Use busboy's on file method to handle the upload image file by user
+- Use busboy's on finish method to upload the file to our firebase storage bucket
+    - Also create the imageUrl to add to our user document
+- Test out image upload using Postman
+    - Login with a user
+    - Pass the Bearer {token} and attach image file
+    - Make sure everything works by checking Firebase Database and Storage

@@ -8,7 +8,7 @@ const firebaseAuth = require('./utils/firebaseAuth');
 
 // Controllers
 const { getAllPosts, addPost } = require('./controllers/postController');
-const { registerUser, loginUser } = require('./controllers/usersController');
+const { registerUser, loginUser, uploadImage } = require('./controllers/usersController');
 
 
 // ======================
@@ -22,6 +22,7 @@ app.post('/post', firebaseAuth, addPost);
 // Users Routes
 app.post('/register', registerUser);
 app.post('/login', loginUser);
+app.post('/user/image', firebaseAuth, uploadImage);
 
 
 
