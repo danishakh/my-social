@@ -57,3 +57,15 @@ This document contains the list of tasks and the order in which I completed the 
 - Verify if the token is from our server using firebase functions
 - Return the user with the corresponding token from our firebase db
 - Add the user's username to the request object and call `next()` to move forward with the actual resource request
+
+## Refactor/Organize Code
+- Create controllers to handle the work for each route
+    - users controller
+    - posts controller
+- Create a utils folder to hold
+    - `/utils/admin.js` : to hold and initialize our firebase app admin
+    - `/utils/config.js` : to hold our firebase app config
+    - `/utils/firebaseAuth.js` : to hold our authentication middleware function
+- Make sure validation function files are required in the correct controllers
+- Make sure all controllers and firebaseAuth files require needed objects (admin, db)
+- Make sure to import all these files into our `index.js`
