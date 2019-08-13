@@ -4,6 +4,8 @@ const firebase = require('firebase');
 
 const serviceAccount = require("./keys/my-social-7b8185040aea.json");
 
+// Load input validation
+const validateSignupInput = require("./validation/validateSignupInput");
 
 // Initialize Express
 const app = require('express')();
@@ -92,6 +94,15 @@ app.post('/post', (req, res) => {
 let token, userId;
 
 app.post('/signup', (req, res) => {
+
+    // Form validation
+    const { errors, isValid } = validateSignupInput(req.body);
+
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
     const newUser = {
         email: req.body.email,
         password: req.body.password,
@@ -99,28 +110,28 @@ app.post('/signup', (req, res) => {
         username: req.body.username
     }
 
-    // TODO: validate data
     db
         .doc(`/users/${newUser.username}`)
         .get()
         .then(doc => {
-            // if username already exists in db, return error  
+            // check if username already exists in db, return error  
             if(doc.exists) {
-                return res.status(400).json({ username: 'username already exists!'})
+                return res.status(400).json({ username: 'Username already exists!'})
             }
-            // register user
+            // register & create user
             else {
                 return firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
             }
         })
-        // If we reach here, user has been created - get token out of the created user
+        // If we reach here, user has been created - get uid and token out of the created user
         .then(data => {
-            userId = data.user.uid;
-            return data.user.getIdToken()
+            userId = data.user.uid; // get our uid of the created user
+            return data.user.getIdToken()   // get token for our current user
         })
-        // return token as response
+        // we store the returned token in a variable for later user
         .then(idToken => {
             token = idToken;
+
             // create our user credentials to persist in our db
             const userCredentials = {
                 username: newUser.username,
@@ -129,8 +140,10 @@ app.post('/signup', (req, res) => {
                 userId
             };
 
+            // REMEMBER: 'username' is our main ID for our users documents
             return db.doc(`/users/${newUser.username}`).set(userCredentials);
         })
+        // return token
         .then(() => {
             return res.status(201).json({ token });
         })
@@ -146,6 +159,9 @@ app.post('/signup', (req, res) => {
             }
         });
 });
+
+
+
 
 
 // https://baseurl.com/posts -> bad practice, rather want to have /api/posts
