@@ -6,6 +6,7 @@ const serviceAccount = require("./keys/my-social-7b8185040aea.json");
 
 // Load input validation
 const validateSignupInput = require("./validation/validateSignupInput");
+const validateLoginInput = require("./validation/validateLoginInput");
 
 // Initialize Express
 const app = require('express')();
@@ -160,6 +161,43 @@ app.post('/signup', (req, res) => {
         });
 });
 
+// Login Route
+app.post('/login', (req, res) => {
+
+    // Form validation
+    const { errors, isValid } = validateLoginInput(req.body);
+
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    const user = {
+        email: req.body.email,
+        password: req.body.password
+    }
+
+    // firebase signin
+    firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+        .then(data => {
+            // Get the token from the data returned
+            return data.user.getIdToken();
+        })
+        // Send the token in our response
+        .then(token => {
+            return res.json({ token });
+        })
+        // handle errors
+        .catch(err => {
+            if(err.code === "auth/wrong-password") {
+                return res.status(401).json({ error: 'Auth Failed - Incorrect Username/Password!'})
+            }
+            else {
+                console.error(err);
+                return res.status(500).json({ error: err.code});
+            }
+        });
+})
 
 
 
