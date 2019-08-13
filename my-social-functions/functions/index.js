@@ -34,10 +34,46 @@ firebase.initializeApp(firebaseConfig);
 
 const db = admin.firestore();
 
+// Authentication Middleware
+const firebaseAuth = (req, res, next) => {
+    let idToken;
+
+    // Check header for token
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+        idToken = req.headers.authorization.split(' ')[1];
+    }
+    else {
+        console.error('Unauthorized - Missing/Incorrect Token');
+        return res.status(403).json({ error: 'Unauthorized'});
+    }
+
+    // Verify this token is of a user from our server
+    admin.auth().verifyIdToken(idToken)
+        .then(decodedToken => {     // decodedToken holds the data inside our token -> user data
+            // Add this data to our request object
+            req.user = decodedToken;
+
+            // Return username which is stored in our db
+            return db.collection('users')
+                .where('userId', '==', req.user.uid)
+                .limit(1)
+                .get();
+        })  
+        .then(data => {
+            // Set the username from our db to the request object
+            req.user.username = data.docs[0].data().username;
+            return next();
+        })
+        .catch(err => {
+            console.error('Error while verifying token', err);
+            return res.status(403).json(err);
+        });
+}
+
+
 // ======================
 // API ROUTES
 // ======================
-
 
 // GET All Posts - (/api/posts)
 app.get('/posts', (req, res) => {
@@ -64,9 +100,8 @@ app.get('/posts', (req, res) => {
         .catch(err => console.error(err));
 })
 
-
 // Add new post - (/api/post)
-app.post('/post', (req, res) => {
+app.post('/post', firebaseAuth, (req, res) => {
     // if you send a GET method to a route which expects POST, send this error
     if(req.method !== 'POST') {
         return res.status(400).json({ error: 'Method not allowed!'});
@@ -74,9 +109,9 @@ app.post('/post', (req, res) => {
 
     const newPost = {
         body: req.body.body,
-        username: req.body.username,
+        username: req.user.username,
         createdAt: new Date().toISOString()
-    }
+    };
 
     db
         .collection('posts')

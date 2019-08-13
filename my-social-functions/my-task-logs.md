@@ -2,8 +2,8 @@
 
 This document contains the list of tasks and the order in which I completed the tasks so that I can always refer back to this file when creating similar applications using Firebase.
 
-## Firebase Setup
 
+## Firebase Setup
 - Create project on Firebase
 
 ### Firebase Functions Setup
@@ -12,6 +12,7 @@ This document contains the list of tasks and the order in which I completed the 
 - Go to your project folder and create a folder `/my-social-functions`
 - `firebase init` and select Functions, and let it install all the required dependencies
 - We now should have our initial firebase functions setup 
+
 
 ## Initialize Firebase App and Start Creating Routes
 `../functions/index.js`
@@ -45,3 +46,14 @@ This document contains the list of tasks and the order in which I completed the 
 - Include validation, user/pass checks, token handling
 - Use `validator` and `is-empty` for validation
 - Test login route on Postman
+
+
+## Implement authentication middleware to protect our API routes
+- Users need to be logged in to create/view posts
+- Middleware will check for authentication token that is sent by the user, and extract the username from it
+
+### Firebase Middleware
+- Check to see if request has an Authorization header, and a token in it
+- Verify if the token is from our server using firebase functions
+- Return the user with the corresponding token from our firebase db
+- Add the user's username to the request object and call `next()` to move forward with the actual resource request
