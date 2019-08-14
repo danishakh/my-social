@@ -80,7 +80,7 @@ This document contains the list of tasks and the order in which I completed the 
 
 ## Image Upload
 ```javascript 
-    app.get('/user/image', uploadImage) 
+    app.post('/user/image', uploadImage) 
 ```
 - `npm install --save busboy`
 - Use buyboy to process our uploading to our firebase storage library
@@ -95,7 +95,7 @@ This document contains the list of tasks and the order in which I completed the 
 
 ## Add User Details Functionality
 ```javascript 
-    app.post('/user', getLoggedInUserDetails) 
+    app.post('/user', addUserDeteails) 
 ```
 - allows users to update their profile 
 - perform the necessary validation/formatting of the client input that we will receive
@@ -125,4 +125,6 @@ This document contains the list of tasks and the order in which I completed the 
 ```
 - created a route to add comments to a post
     - check if the post exists before doing anything or firebase will kill you
-    - 
+    - include username and user's imageUrl properties from the `req.user` object we get from our middleware
+    - return the comment with the user info in the response
+
