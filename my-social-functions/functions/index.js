@@ -7,8 +7,8 @@ const app = require('express')();
 const firebaseAuth = require('./utils/firebaseAuth');
 
 // Controllers
-const { getAllPosts, addPost } = require('./controllers/postController');
-const { registerUser, loginUser, uploadImage } = require('./controllers/usersController');
+const { getAllPosts, addPost, getPost } = require('./controllers/postController');
+const { registerUser, loginUser, uploadImage, addUserDetails, getLoggedInUserDetails } = require('./controllers/usersController');
 
 
 // ======================
@@ -18,11 +18,23 @@ const { registerUser, loginUser, uploadImage } = require('./controllers/usersCon
 // Posts Routes
 app.get('/posts', getAllPosts)
 app.post('/post', firebaseAuth, addPost);
+app.get('/post/:postId', getPost);
+//TODO: delete post
+//TODO: like a post
+//TODO: unlike post
+//TODO: comment on post
 
-// Users Routes
+
+
+// User Data Routes
+app.post('/user/image', firebaseAuth, uploadImage);
+app.post('/user', firebaseAuth, addUserDetails);
+app.get('/user', firebaseAuth, getLoggedInUserDetails); // get logged in user's details when login is successful and we are routing them to the homepage
+
+// Login/Register Routes
 app.post('/register', registerUser);
 app.post('/login', loginUser);
-app.post('/user/image', firebaseAuth, uploadImage);
+
 
 
 

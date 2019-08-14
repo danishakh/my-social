@@ -82,3 +82,17 @@ This document contains the list of tasks and the order in which I completed the 
     - Login with a user
     - Pass the Bearer {token} and attach image file
     - Make sure everything works by checking Firebase Database and Storage
+
+
+## Add User Details Functionality
+- allows users to update their profile 
+- perform the necessary validation/formatting of the client input that we will receive
+- update the users collection in firebase
+
+## Get User Details Functionality (logged in user)
+- we want to keep the login route minimal so that its fast, so we don't return anything besides the token in it
+- once the user is going to be redirected to the homepage, we will use this route to pull in all the details of that user so that we can update the homepage. (user details/likes and more)
+- this data will be used by our redux store in the front-end
+- this route will return a userData object which will have info from different collections
+    - userCredentials: from users document
+    - likes: from the likes document

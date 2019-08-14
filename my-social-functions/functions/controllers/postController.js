@@ -51,3 +51,33 @@ exports.addPost = (req, res) => {
             console.error(err);
         });
 }
+
+// Get a post (with comments)
+exports.getPost = (req, res) => {
+    let postData = {};
+
+    db.doc(`/posts/${req.params.postId}`).get()
+        .then(doc => {
+            if(!doc.exists) {
+                return res.status(404).json({ error: 'Post not found!' });
+            }
+
+            postData = doc.data();  
+            postData.postId = doc.id;   // also insert the postId in our postData object
+
+            // now we need to add in all the comments for this post
+            return db.collection('comments').orderBy('createdAt', 'desc').where('postId', '==', req.params.postId).get();
+        })
+        .then(data => {
+            postData.comments = [];
+            data.forEach(doc => {
+                postData.comments.push(doc.data())   // insert comments
+            });
+
+            return res.json(postData);
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({ error: err.code });
+        });
+}

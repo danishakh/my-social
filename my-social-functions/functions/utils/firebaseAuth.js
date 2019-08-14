@@ -28,6 +28,7 @@ module.exports = (req, res, next) => {
         .then(data => {
             // Set the username from our db to the request object
             req.user.username = data.docs[0].data().username;
+            console.log(req.user);
             return next();
         })
         .catch(err => {

@@ -8,6 +8,7 @@ firebase.initializeApp(config);
 // Load input validation
 const validateSignupInput = require("../validation/validateSignupInput");
 const validateLoginInput = require("../validation/validateLoginInput");
+const formatUserDetails = require("../validation/formatUserDetails");
 
 // Busboy - Image Upload
 const Busboy = require('busboy');
@@ -17,6 +18,7 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 
+const isEmpty = require("is-empty");
 
 
 // Register User Controller
@@ -130,6 +132,43 @@ exports.loginUser = (req, res) => {
         });
 }
 
+// Add User Details
+exports.addUserDetails = (req, res) => {
+    let userDetails = formatUserDetails(req.body);
+
+    db.doc(`/users/${req.user.username}`).update(userDetails)
+        .then(() => {
+            return res.json({ message: 'User details updated successfully '});
+        })
+        .catch(err => {
+            console.error(err);
+            return res.status(500).json({ error: err.code });
+        });
+}
+
+// Get LoggedIn User Details
+exports.getLoggedInUserDetails = (req, res) => {
+    let userData = {};
+
+    db.doc(`/users/${req.user.username}`).get() // get user details from users collection
+        .then(doc => {
+            if(doc.exists) {
+                userData.credentials = doc.data();  // insert our user details in userData object
+                return db.collection('likes').where('username', '==', req.user.username).get()  // get likes of our user from likes collection
+            }
+        })
+        .then(data => {
+            userData.likes = [];
+            data.forEach(doc => {
+                userData.likes.push(doc.data());    // insert likes in an array in userData object
+            });
+            return res.json(userData);
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({ error: err.code });
+        });
+}
 
 // User Upload Image Controller
 exports.uploadImage = (req, res) => {
