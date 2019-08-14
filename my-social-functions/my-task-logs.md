@@ -37,7 +37,7 @@ This document contains the list of tasks and the order in which I completed the 
 
 ### Signup Route
 ```javascript 
-    app.post('/login', loginUser) 
+    app.post('/register', registerUser) 
 ```
 - Create our express route for Signup
 - Include validation, user credential handling, token handling and db persistence
@@ -119,3 +119,10 @@ This document contains the list of tasks and the order in which I completed the 
 - created another route to get a specific post with all comments
 - the returned object includes all the post details, and also includes an array of comments for that post which was pulled from the comments db collection.
 
+## Post a comment
+```javascript
+    app.post('/post/:postId/comment', addCommentToPost)
+```
+- created a route to add comments to a post
+    - check if the post exists before doing anything or firebase will kill you
+    - 

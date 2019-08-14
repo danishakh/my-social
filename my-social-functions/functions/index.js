@@ -7,7 +7,7 @@ const app = require('express')();
 const firebaseAuth = require('./utils/firebaseAuth');
 
 // Controllers
-const { getAllPosts, addPost, getPost } = require('./controllers/postController');
+const { getAllPosts, addPost, getPost, addCommentToPost } = require('./controllers/postController');
 const { registerUser, loginUser, uploadImage, addUserDetails, getLoggedInUserDetails } = require('./controllers/usersController');
 
 
@@ -22,14 +22,14 @@ app.get('/post/:postId', getPost);
 //TODO: delete post
 //TODO: like a post
 //TODO: unlike post
-//TODO: comment on post
-
+app.post('/post/:postId/comment', firebaseAuth, addCommentToPost);
 
 
 // User Data Routes
 app.post('/user/image', firebaseAuth, uploadImage);
 app.post('/user', firebaseAuth, addUserDetails);
 app.get('/user', firebaseAuth, getLoggedInUserDetails); // get logged in user's details when login is successful and we are routing them to the homepage
+
 
 // Login/Register Routes
 app.post('/register', registerUser);
