@@ -36,12 +36,18 @@ This document contains the list of tasks and the order in which I completed the 
 - Initialize Firebase App with our app config
 
 ### Signup Route
+```javascript 
+    app.post('/login', loginUser) 
+```
 - Create our express route for Signup
 - Include validation, user credential handling, token handling and db persistence
 - Use `validator` and `is-empty` for validation
 - Test signup route on Postman
 
 ### Login Route
+```javascript 
+    app.post('/login', loginUser) 
+```
 - Create our express route for Login
 - Include validation, user/pass checks, token handling
 - Use `validator` and `is-empty` for validation
@@ -73,6 +79,9 @@ This document contains the list of tasks and the order in which I completed the 
 
 
 ## Image Upload
+```javascript 
+    app.get('/user/image', uploadImage) 
+```
 - `npm install --save busboy`
 - Use buyboy to process our uploading to our firebase storage library
 - Use busboy's on file method to handle the upload image file by user
@@ -85,11 +94,17 @@ This document contains the list of tasks and the order in which I completed the 
 
 
 ## Add User Details Functionality
+```javascript 
+    app.post('/user', getLoggedInUserDetails) 
+```
 - allows users to update their profile 
 - perform the necessary validation/formatting of the client input that we will receive
 - update the users collection in firebase
 
 ## Get User Details Functionality (logged in user)
+```javascript 
+    app.get('/user', getLoggedInUserDetails) 
+```
 - we want to keep the login route minimal so that its fast, so we don't return anything besides the token in it
 - once the user is going to be redirected to the homepage, we will use this route to pull in all the details of that user so that we can update the homepage. (user details/likes and more)
 - this data will be used by our redux store in the front-end
@@ -98,7 +113,9 @@ This document contains the list of tasks and the order in which I completed the 
     - likes: from the likes document
 
 ## Get A Post
-- ```javascript app.get('/post/:postId', getPost) ```
+```javascript 
+    app.get('/post/:postId', getPost) 
+```
 - created another route to get a specific post with all comments
 - the returned object includes all the post details, and also includes an array of comments for that post which was pulled from the comments db collection.
 
