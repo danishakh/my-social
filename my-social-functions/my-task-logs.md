@@ -1,4 +1,4 @@
-# Tasks Logs
+# Tasks/Stories Logs
 
 This document contains the list of tasks and the order in which I completed the tasks so that I can always refer back to this file when creating similar applications using Firebase.
 
@@ -96,3 +96,9 @@ This document contains the list of tasks and the order in which I completed the 
 - this route will return a userData object which will have info from different collections
     - userCredentials: from users document
     - likes: from the likes document
+
+## Get A Post
+- ```javascript app.get('/post/:postId', getPost) ```
+- created another route to get a specific post with all comments
+- the returned object includes all the post details, and also includes an array of comments for that post which was pulled from the comments db collection.
+
