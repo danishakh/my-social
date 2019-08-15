@@ -46,12 +46,15 @@ app.post('/login', loginUser);
 exports.api = functions.https.onRequest(app);
 
 
+// ====================================
 // Notifications - Cloud Firestore Triggers
+// ====================================
 exports.createNotificationOnLike = functions.region('us-central1').firestore.document('likes/{id}')
     .onCreate((snapshot) => {
-        db.doc(`/posts/${snapshot.data().postId}`).get()
+        return db.doc(`/posts/${snapshot.data().postId}`).get()
             .then(doc => {
-                if (doc.exists) {
+                // check to see if the post exists, and its not a post by our user 
+                if (doc.exists && doc.data().username !== snapshot.data().username) {
                     // create our notification
                     return db.doc(`/notifications/${snapshot.id}`).set({
                         createdAt: new Date().toISOString(),
@@ -63,33 +66,25 @@ exports.createNotificationOnLike = functions.region('us-central1').firestore.doc
                     })
                 }
             })
-            .then(() => {
-                return;
-            })
             .catch(err => {
                 console.error(err);
-                return;
             });
     });
 
 exports.deleteNotificationOnUnlike = functions.region('us-central1').firestore.document('likes/{id}')
     .onDelete((snapshot) => {
-        db.doc(`/notifications/${snapshot.id}`)
+        return db.doc(`/notifications/${snapshot.id}`)
             .delete()
-            .then(() => {
-                return;
-            })
             .catch(err => {
                 console.error(err);
-                return;
             });
     });
 
 exports.createNotificationOnComment = functions.region('us-central1').firestore.document('comments/{id}')
     .onCreate((snapshot) => {
-        db.doc(`/posts/${snapshot.data().postId}`).get()
+        return db.doc(`/posts/${snapshot.data().postId}`).get()
             .then(doc => {
-                if (doc.exists) {
+                if (doc.exists && doc.data().username !== snapshot.data().username) {
                     // create our notification
                     return db.doc(`/notifications/${snapshot.id}`).set({
                         createdAt: new Date().toISOString(),
@@ -101,11 +96,7 @@ exports.createNotificationOnComment = functions.region('us-central1').firestore.
                     })
                 }
             })
-            .then(() => {
-                return;
-            })
             .catch(err => {
                 console.error(err);
-                return;
             });
     });
