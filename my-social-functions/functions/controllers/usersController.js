@@ -89,7 +89,7 @@ exports.registerUser = (req, res) => {
             } 
             // Else it's probably some Server Error
             else {
-                return res.status(500).json({ error: err.code });
+                return res.status(500).json({ general: "Something went wrong! Please try again!" });
             }
         });
 }
@@ -122,7 +122,7 @@ exports.loginUser = (req, res) => {
         })
         // handle errors
         .catch(err => {
-            if(err.code === "auth/wrong-password") {
+            if(err.code === "auth/wrong-password" || err.code === "auth/user-not-found") {
                 return res.status(401).json({ error: 'Auth Failed - Incorrect Username/Password!'})
             }
             else {

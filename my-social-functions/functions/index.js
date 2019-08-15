@@ -34,6 +34,7 @@ app.get('/user', firebaseAuth, getLoggedInUserDetails); // get logged in user's 
 app.get('/user/:username', getUserDetails);     // get any user's public info
 app.post('/notifications', firebaseAuth, markNotificationsRead);
 
+
 // Login/Register Routes
 app.post('/register', registerUser);
 app.post('/login', loginUser);

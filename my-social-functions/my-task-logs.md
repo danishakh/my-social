@@ -197,7 +197,8 @@ A new notifications collection will be created when the 1st notification documen
 - Get the notifications where 'recipient' is our logged in user
 - Add an array of the notifications to the `userData` object that we will return to the front-end
 
-* NOTE: When you test out getting notifications for a user in `GET /user` route. You will get an `{ error: 9 }` response - if you look at the logs, it will provide a link to create an index in the database between users and notifications because we are performing a complex query. 
+
+*NOTE: When you test out getting notifications for a user in `GET /user` route. You will get an `{ error: 9 }` response - if you look at the logs, it will provide a link to create an index in the database between users and notifications because we are performing a complex query. 
 
 
 ## Get A User's Details 
