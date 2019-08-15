@@ -7,7 +7,7 @@ const app = require('express')();
 const firebaseAuth = require('./utils/firebaseAuth');
 
 // Controllers
-const { getAllPosts, addPost, getPost, addCommentToPost } = require('./controllers/postController');
+const { getAllPosts, addPost, getPost, addCommentToPost, likePost, unlikePost, deletePost } = require('./controllers/postController');
 const { registerUser, loginUser, uploadImage, addUserDetails, getLoggedInUserDetails } = require('./controllers/usersController');
 
 
@@ -19,9 +19,9 @@ const { registerUser, loginUser, uploadImage, addUserDetails, getLoggedInUserDet
 app.get('/posts', getAllPosts)
 app.post('/post', firebaseAuth, addPost);
 app.get('/post/:postId', getPost);
-//TODO: delete post
-//TODO: like a post
-//TODO: unlike post
+app.delete('/post/:postId', firebaseAuth, deletePost);
+app.get('/post/:postId/like', firebaseAuth, likePost);
+app.get('/post/:postId/unlike', firebaseAuth, unlikePost);
 app.post('/post/:postId/comment', firebaseAuth, addCommentToPost);
 
 

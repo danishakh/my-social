@@ -80,7 +80,7 @@ This document contains the list of tasks and the order in which I completed the 
 
 ## Image Upload
 ```javascript 
-    app.post('/user/image', uploadImage) 
+    app.post('/user/image', firebaseAuth, uploadImage) 
 ```
 - `npm install --save busboy`
 - Use buyboy to process our uploading to our firebase storage library
@@ -95,15 +95,16 @@ This document contains the list of tasks and the order in which I completed the 
 
 ## Add User Details Functionality
 ```javascript 
-    app.post('/user', addUserDeteails) 
+    app.post('/user', firebaseAuth, addUserDeteails) 
 ```
 - allows users to update their profile 
 - perform the necessary validation/formatting of the client input that we will receive
 - update the users collection in firebase
 
+
 ## Get User Details Functionality (logged in user)
 ```javascript 
-    app.get('/user', getLoggedInUserDetails) 
+    app.get('/user', firebaseAuth, getLoggedInUserDetails) 
 ```
 - we want to keep the login route minimal so that its fast, so we don't return anything besides the token in it
 - once the user is going to be redirected to the homepage, we will use this route to pull in all the details of that user so that we can update the homepage. (user details/likes and more)
@@ -112,6 +113,7 @@ This document contains the list of tasks and the order in which I completed the 
     - userCredentials: from users document
     - likes: from the likes document
 
+
 ## Get A Post
 ```javascript 
     app.get('/post/:postId', getPost) 
@@ -119,12 +121,46 @@ This document contains the list of tasks and the order in which I completed the 
 - created another route to get a specific post with all comments
 - the returned object includes all the post details, and also includes an array of comments for that post which was pulled from the comments db collection.
 
+
 ## Post a comment
 ```javascript
-    app.post('/post/:postId/comment', addCommentToPost)
+    app.post('/post/:postId/comment', firebaseAuth, addCommentToPost)
 ```
 - created a route to add comments to a post
     - check if the post exists before doing anything or firebase will kill you
     - include username and user's imageUrl properties from the `req.user` object we get from our middleware
     - return the comment with the user info in the response
 
+
+## Like a post
+```javascript
+    app.get('/post/:postId/like', firebaseAuth, likePost)
+```
+- Need to make 2 checks here:
+    1. Check if the post exists
+    2. Check to see if there is a like document with our user and the passed in post
+        - If there isn't one, then add our Like document with the appropriate username and postId
+        - Increment that specific post's `likeCount`
+- Return the post
+
+
+## Unlike a post
+```javascript
+    app.get('/post/:postId/unlike', firebaseAuth, unlikePost)
+```
+- Need to make 2 checks here:
+    1. Check if the post exists
+    2. Check to see if there is a like document with our user and the passed in post
+        - If there is one, then unlike it
+        - Decrement that post's `likeCount`
+        - Delete the Like document
+- Return the post
+
+
+## Delete a Post
+```javascript
+    app.delete('/post/:postId', firebaseAuth, deletePost)
+```
+- Get the post of the passed in postId parameter
+- If it exists, check if the username of the post creator = loggedInUser
+- Delete the post document
