@@ -146,6 +146,43 @@ exports.addUserDetails = (req, res) => {
         });
 }
 
+// Get Any User's Details
+exports.getUserDetails = (req, res) => {
+    let userData = {};
+
+    db.doc(`/users/${req.params.username}`).get()
+        .then(doc => {
+            if (doc.exists) {
+                userData.user = doc.data();
+                return db.collection('posts').where('username', '==', req.params.username)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+            }
+            else {
+                return res.stat(404).json({ error: 'User not found' });
+            }
+        })
+        .then(data => {
+            userData.posts = [];
+            data.forEach(doc => {
+                userData.posts.push({
+                    body: doc.data().body,
+                    createdAt: doc.data().createdAt,
+                    username: doc.data().username,
+                    userImage: doc.data().userImage,
+                    likeCount: doc.data().likeCount,
+                    commentCount: doc.data().commentCount,
+                    postId: doc.id,
+                })
+            });
+            return res.json(userData);
+        })
+        .catch(err => {
+            console.error(err);
+            return res.status(500).json({ error: err.code });
+        });
+}
+
 // Get LoggedIn User Details
 exports.getLoggedInUserDetails = (req, res) => {
     let userData = {};
@@ -161,6 +198,26 @@ exports.getLoggedInUserDetails = (req, res) => {
             userData.likes = [];
             data.forEach(doc => {
                 userData.likes.push(doc.data());    // insert likes in an array in userData object
+            });
+            // Get notifications for this username
+            return db.collection('notifications').where('recipient', '==', req.user.username)
+                .orderBy('createdAt', 'desc')
+                .limit(10)
+                .get()
+        })
+        .then(data => {
+            // add our notifications to the userData object which we will return as response
+            userData.notifications = [];
+            data.forEach(doc => {
+                userData.notifications.push({
+                    recipient: doc.data().recipient,
+                    sender: doc.data().sender,
+                    createdAt: doc.data().createdAt,
+                    postId: doc.data().postId,
+                    type: doc.data().type,
+                    read: doc.data().read,
+                    notificationId: doc.id
+                })
             });
             return res.json(userData);
         })
@@ -230,4 +287,28 @@ exports.uploadImage = (req, res) => {
     });
 
     busboy.end(req.rawBody);
+}
+
+exports.markNotificationsRead = (req, res) => {
+    // when the user opens the notifications dropdown and sees any new notifications, 
+    // we will send to our server an array of notificationIds of those new notifications
+    // so we can mark them as 'read'
+    
+    // batch write - when we want to update multiple documents in firebase
+    let batch = db.batch();
+
+    req.body.forEach(notificationId => {
+        const notification = db.doc(`/notifications/${notificationId}`);
+        batch.update(notification, { read: true });
+    });
+    
+    batch
+        .commit()
+        .then(() => {
+            return res.json({ message: 'New notifications marked as read' });
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({ error: err.code });
+        });
 }
