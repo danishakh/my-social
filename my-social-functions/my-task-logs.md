@@ -190,8 +190,7 @@ A new notifications collection will be created when the 1st notification documen
     - Create our notification document with all the necessary fields
     - Note: Later on we will give the notification the same id as the like/comment it is notifying on
 
-NOTE: THESE ARE DB TRIGGERS SO YOU NEED TO DEPLOY TO GET THESE TO WORK!
-NOTE: MAKE SURE YOU SEE THESE NOTIFICATIONS ON OUR FIREBASE FUNCTIONS!
+*NOTE: THESE ARE DB TRIGGERS SO YOU NEED TO DEPLOY TO GET THESE TO WORK! MAKE SURE YOU SEE THESE NOTIFICATIONS ON OUR FIREBASE FUNCTIONS!
 
 ### Edits to GetLoggedInUser
 - When we get the user data and their likes, we need to get their notifications as well bec we need to access them and show them in our front-end
@@ -205,12 +204,12 @@ NOTE: MAKE SURE YOU SEE THESE NOTIFICATIONS ON OUR FIREBASE FUNCTIONS!
 ```javascript
     app.get('/user/:username', getUserDetails)
 ```
-- Get the user document of the username passed in the request parameters
+- Get the user document of any username passed in the request parameters
 - Add a `userData.user` object to contain the return user
 - Get this user's posts and initialize `userData.posts = []` and push the posts
 - Return the `userData`
 
-* NOTE: When you test this route, you will get an `{ error: 9 }` response - if you look at the logs, it will provide a link to create an index in the database between users and posts because we are performing a complex query. 
+*NOTE: When you test this route, you will get an `{ error: 9 }` response - if you look at the logs, it will provide a link to create an index in the database between users and posts because we are performing a complex query. 
 
 
 ## Mark Notifications as Read 
