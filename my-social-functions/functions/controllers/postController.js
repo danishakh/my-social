@@ -17,7 +17,8 @@ exports.getAllPosts = (req, res) => {
                     username: doc.data().username,
                     createdAt: doc.data().createdAt,
                     commentCount: doc.data().commentCount,
-                    likeCount: doc.data().likeCount
+                    likeCount: doc.data().likeCount,
+                    userImage: doc.data().userImage
                 }); // doc.data() - function that returns the data inside the document
             });
 
@@ -93,7 +94,7 @@ exports.addCommentToPost = (req, res) => {
     
     // Check for empty comment
     if(req.body.body.trim() === "") {
-        return res.status(400).json({ error: 'Must not be empty '});
+        return res.status(400).json({ comment: 'Must not be empty '});
     }
 
     const newComment = {
