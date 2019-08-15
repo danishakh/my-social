@@ -1,4 +1,4 @@
-# Tasks/Stories Logs
+# Firebase Cloud Functions - Tasks/Stories Logs
 
 This document contains the list of tasks and the order in which I completed the tasks so that I can always refer back to this file when creating similar applications using Firebase.
 
@@ -164,3 +164,61 @@ This document contains the list of tasks and the order in which I completed the 
 - Get the post of the passed in postId parameter
 - If it exists, check if the username of the post creator = loggedInUser
 - Delete the post document
+
+
+## Notifications
+We want to have our users get notifications when their posts were liked/commented on.
+We will use Cloud Firestore triggers that are listeners that listen to changes on certain documents, and based on those changes it creates/deletes notifications.
+A new notifications collection will be created when the 1st notification document is created
+
+### Create Notification on Like
+- We create a notification cloud function in our `index.js` with the same region as our storage and db.
+- We use `onCreate` - whenever a like document is created
+    - We get the post that just got liked because we need some data from it (owner of the post)
+    - Create our notification document with all the necessary fields
+    - Note: Later on we will give the notification the same id as the like/comment it is notifying on
+
+### Delete Notification on Unlike
+- Same thing as above
+- We use `onDelete` - whenever a like document is deleted
+- We just delete the notification. (use `/notifications/${snapshot.id})`)
+
+### Create Notification on Comment
+- Same thing as 'Create Notification on Like'
+- We use `onCreate` - whenever a comment document is created for a post
+    - We get the post that just got liked because we need some data from it (owner of the post)
+    - Create our notification document with all the necessary fields
+    - Note: Later on we will give the notification the same id as the like/comment it is notifying on
+
+NOTE: THESE ARE DB TRIGGERS SO YOU NEED TO DEPLOY TO GET THESE TO WORK!
+NOTE: MAKE SURE YOU SEE THESE NOTIFICATIONS ON OUR FIREBASE FUNCTIONS!
+
+### Edits to GetLoggedInUser
+- When we get the user data and their likes, we need to get their notifications as well bec we need to access them and show them in our front-end
+- Get the notifications where 'recipient' is our logged in user
+- Add an array of the notifications to the `userData` object that we will return to the front-end
+
+* NOTE: When you test out getting notifications for a user in `GET /user` route. You will get an `{ error: 9 }` response - if you look at the logs, it will provide a link to create an index in the database between users and notifications because we are performing a complex query. 
+
+
+## Get A User's Details 
+```javascript
+    app.get('/user/:username', getUserDetails)
+```
+- Get the user document of the username passed in the request parameters
+- Add a `userData.user` object to contain the return user
+- Get this user's posts and initialize `userData.posts = []` and push the posts
+- Return the `userData`
+
+* NOTE: When you test this route, you will get an `{ error: 9 }` response - if you look at the logs, it will provide a link to create an index in the database between users and posts because we are performing a complex query. 
+
+
+## Mark Notifications as Read 
+```javascript
+    app.post('/notifications', firebaseAuth, markNotificationsRead)
+```
+- When our user opens notifs dropdown and sees unread notifications, we will send an array of ids of those notifications to our server to mark them as 'read'
+- We will use a batch write function that firebase provides us to update multiple documents
+- We get the notificationIds in our request from which we get our documents
+- We then update each notification with `{ read: true }`
+- We then commit our updates with `batch.commit()`

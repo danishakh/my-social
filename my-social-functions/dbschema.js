@@ -30,6 +30,16 @@ let db = {
             body: 'check out this comment bruh',
             createdAt: '2019-03-15T10:55:23.777Z'
         }
+    ],
+    notifications: [
+        {
+            recipient: 'user1',
+            sender: 'tommy',
+            read: 'true | false',
+            postId: 'aoksodifasdkfl',
+            type: 'like | comment',
+            createdAt: '2019-03-15T10:55:23.777Z'
+        }   
     ]
 }
 
