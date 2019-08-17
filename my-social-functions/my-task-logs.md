@@ -237,3 +237,12 @@ A new notifications collection will be created when the 1st notification documen
 - Get the likes by 'postId' and perform a `batch.delete()`
 - Get the notifications by 'postId' and perform a `batch.delete()`
 - Perform a `batch.commit()`
+
+
+## Restrict Firebase Cloud Firestore REST API
+- Firebase Cloud Firestore provides a REST API to access your firestore
+- `https://firestore.googleapis.com/v1/projects/YOUR_PROJECT_ID/databases/(default)/documents/cities/LA
+`
+- To patch this security hole:
+    - Go to your Firebase Database > Rules >
+    - Edit last line to `allow read, write: if false;` to restrict access to the above URL via Firebase REST API
