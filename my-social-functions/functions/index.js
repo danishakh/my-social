@@ -100,3 +100,67 @@ exports.createNotificationOnComment = functions.region('us-central1').firestore.
                 console.error(err);
             });
     });
+
+// Everytime a user changes their image, change it for all their posts/comments
+exports.onUserImageChange = functions.region('us-central1').firestore.document('/users/{userId}')
+    .onUpdate((change) => {
+        // If the imageURL before and after the trigger are not the same
+        if (change.before.data().imageUrl !== change.after.data().imageUrl) {
+            let batch = db.batch();
+
+            // update the image beside all their posts
+            return db.collection('posts')
+                .where('username', '==', change.before.data().username)
+                .get()
+                .then(data => {
+                    data.forEach(doc => {
+                        const post = db.doc(`/posts/${doc.id}`);
+                        batch.update(post, { userImage: change.after.data().imageUrl });
+                    });
+                    //return batch.commit();
+                })
+                .then(() => {
+                    // update the image beside all their
+                    return db.collection('comments')
+                        .where('username', '==', change.before.data().username)
+                        .get()         
+                })
+                .then(data => {
+                    data.forEach(doc => {
+                        const comment = db.doc(`/comments/${doc.id}`);
+                        batch.update(comment, { userImage: change.after.data().imageUrl });
+                    });
+                    return batch.commit();
+                });
+        }
+    });
+
+// When a post is deleted, delete all the corresponding comments, likes and notifications
+exports.onPostDelete = functions.region('us-central1').firestore.document('/posts/{postId}')
+    .onDelete((snapshot, context) => {
+        const postId = context.params.postId;
+        const batch = db.batch();
+
+        return db.collection('comments').where('postId', '==', postId).get()
+            .then(data => {
+                data.forEach(doc => {
+                    batch.delete(db.doc(`/comments/${doc.id}`));
+                });
+                return db.collection('likes').where('postId', '==', postId).get()
+            })
+            .then(data => {
+                data.forEach(doc => {
+                    batch.delete(db.doc(`/likes/${doc.id}`));
+                });
+                return db.collection('notifications').where('postId', '==', postId).get()
+            })
+            .then(data => {
+                data.forEach(doc => {
+                    batch.delete(db.doc(`/notifications/${doc.id}`));
+                });
+                return batch.commit();
+            })
+            .catch(err => {
+                console.error(err);
+            })
+    })
