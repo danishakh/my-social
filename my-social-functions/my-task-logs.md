@@ -222,3 +222,18 @@ A new notifications collection will be created when the 1st notification documen
 - We get the notificationIds in our request from which we get our documents
 - We then update each notification with `{ read: true }`
 - We then commit our updates with `batch.commit()`
+
+
+## Create a Trigger to update User Image
+- Everytime a user update's their profile image from their profile page, we need to update all their corresponding posts and comments with the new imageUrl
+- Get the posts by 'username' and update the userImage
+- Get the comments by 'username' and update the userImage 
+- Do a `batch.commit()` to commit the updates
+
+
+## Delete corresponding Comments/Likes/Notifications once a Post is deleted
+- If a user deletes a post, then all corresponding likes, comments and notifications should be deleted from our database
+- Get the comments by 'postId' and perform a `batch.delete()`
+- Get the likes by 'postId' and perform a `batch.delete()`
+- Get the notifications by 'postId' and perform a `batch.delete()`
+- Perform a `batch.commit()`

@@ -133,6 +133,10 @@ exports.onUserImageChange = functions.region('us-central1').firestore.document('
                     return batch.commit();
                 });
         }
+        else {
+            // just return out of the function
+            return true;
+        }
     });
 
 // When a post is deleted, delete all the corresponding comments, likes and notifications
@@ -141,6 +145,9 @@ exports.onPostDelete = functions.region('us-central1').firestore.document('/post
         const postId = context.params.postId;
         const batch = db.batch();
 
+        console.log(snapshot);
+        console.log(context);
+        
         return db.collection('comments').where('postId', '==', postId).get()
             .then(data => {
                 data.forEach(doc => {
@@ -163,4 +170,4 @@ exports.onPostDelete = functions.region('us-central1').firestore.document('/post
             .catch(err => {
                 console.error(err);
             })
-    })
+    });
