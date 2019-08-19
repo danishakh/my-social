@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class Navbar extends Component {
     render() {
         return (
-            <div>
+            <div className="App">
                 <h1>Navbar here</h1>
             </div>
         )
