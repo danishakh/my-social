@@ -1,18 +1,9 @@
 html, body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-      "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-      sans-serif;
+      "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", 
+      sans-serif, "Long Cang", cursive;
     background-color: rgb(33, 32,44);
 
-}
-
-.logoPaper {
-  background-color: rgb(11, 10, 14);
-}
-
-.formContainer {
-  background-color: rgb(254, 192, 56);
-  padding: 15px;
 }
 
 .container {
@@ -26,4 +17,14 @@ html, body {
 
 a {
   text-decoration: none;
+}
+
+.loginForm {
+  padding-top: 5%;
+  padding-bottom: 10%;
+}
+
+.appTitle {
+  padding-top: 45%;
+  font-family: 'Long Cang', cursive;
 }
