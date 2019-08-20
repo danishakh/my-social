@@ -3,6 +3,9 @@ import axios from 'axios';
 
 import Grid from '@material-ui/core/Grid';
 
+// Components
+import Post from '../../components/Post';
+
 class Home extends Component {
     constructor() {
         super();
@@ -15,7 +18,7 @@ class Home extends Component {
     componentDidMount() {
         axios.get('/posts')
             .then(res => {
-                console.log(res.data);
+                //console.log(res.data);
                 this.setState({
                     posts: res.data
                 })
@@ -25,7 +28,7 @@ class Home extends Component {
     
     render() {
         let latestPosts = this.state.posts ? (
-            this.state.posts.map(post => <Post posts={post} />)
+            this.state.posts.map(post => <Post key={post.postId} post={post} />)
             ) : <p>Loading...</p>
 
         return (
