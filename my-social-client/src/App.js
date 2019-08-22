@@ -9,6 +9,10 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import customTheme from './utils/theme';
 import jwtDecode from 'jwt-decode';
 
+// Redux
+import { Provider } from 'react-redux';
+import store from './redux/store';
+
 // Pages
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -37,7 +41,7 @@ if (token) {
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <div className="App">
+      <Provider store={store}>
         <Router>
           <Navbar />
           <div className="container"> 
@@ -48,7 +52,7 @@ function App() {
             </Switch>
           </div>
         </Router>
-      </div>
+      </Provider>
     </MuiThemeProvider>
   );
 }
