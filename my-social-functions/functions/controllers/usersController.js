@@ -89,7 +89,7 @@ exports.registerUser = (req, res) => {
             } 
             // Else it's probably some Server Error
             else {
-                return res.status(500).json({ general: "Something went wrong! Please try again!" });
+                return res.status(500).json({ error: "Something went wrong! Please try again!" });
             }
         });
 }
@@ -138,7 +138,7 @@ exports.addUserDetails = (req, res) => {
 
     db.doc(`/users/${req.user.username}`).update(userDetails)
         .then(() => {
-            return res.json({ message: 'User details updated successfully '});
+            return res.json({ message: 'User Details Updated Successfully!'});
         })
         .catch(err => {
             console.error(err);
@@ -159,7 +159,7 @@ exports.getUserDetails = (req, res) => {
                     .get();
             }
             else {
-                return res.stat(404).json({ error: 'User not found' });
+                return res.stat(404).json({ error: 'User Not Found!' });
             }
         })
         .then(data => {
@@ -278,7 +278,7 @@ exports.uploadImage = (req, res) => {
             return db.doc(`/users/${req.user.username}`).update({ imageUrl });  //req.user is from the auth middleware
         })
         .then(() => {
-            res.json({ message: 'Image uploaded successfully '});
+            res.json({ message: 'Image Uploaded Successfully '});
         })
         .catch(err => {
             console.error(err);

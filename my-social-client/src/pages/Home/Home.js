@@ -5,17 +5,20 @@ import Grid from '@material-ui/core/Grid';
 
 // Components
 import Post from '../../components/Post';
+import NotifSnackbar from '../../components/NotifSnackbar';
 
 class Home extends Component {
     constructor() {
         super();
 
         this.state = {
-            posts: null
+            posts: null,
+            notifOpen: false
         }
     }
     
     componentDidMount() {
+        this.setState({notifOpen: true});
         axios.get('/posts')
             .then(res => {
                 //console.log(res.data);
@@ -24,6 +27,11 @@ class Home extends Component {
                 })
             })
             .catch(err => console.error(err));
+    }
+
+    // Snackbar Close
+    handleClose = () => {
+        this.setState({notifOpen: false})
     }
     
     render() {
@@ -39,6 +47,14 @@ class Home extends Component {
                 <Grid item sm={6} xs={12}>
                     { latestPosts }
                 </Grid>
+
+                <NotifSnackbar 
+                    variant='success'
+                    open={this.state.notifOpen}
+                    handleClose={this.handleClose}
+                    message='Login Successful!'
+                    onEntered={this.focus}
+                />
             </Grid>
         )
     }

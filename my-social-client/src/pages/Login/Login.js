@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import {Link as BrowserLink} from 'react-router-dom';
-import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import appIcon from '../../images/buzzer.png';
+import axios from 'axios';
+
+// Components
+import NotifSnackbar from '../../components/NotifSnackbar';
 
 // MUI
 import Grid from '@material-ui/core/Grid';
@@ -11,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
+import withStyles from '@material-ui/core/styles/withStyles';
 import { minWidth } from '@material-ui/system';
 
 
@@ -64,14 +68,41 @@ class Login extends Component {
             email: "",
             password: "",
             loading: false,
+            notifOpen: false,
             errors: {}
         }
     }
 
+    // Snackbar Close
+    handleClose = () => {
+        this.setState({notifOpen: false})
+    }
+
+    // Form Submit
     onSubmitHandler = (e) => {
         e.preventDefault();
 
-        console.log('submitted');
+        this.setState({
+            loading: true
+        });
+
+        const userData = {
+            email: this.state.email,
+            password: this.state.password
+        }
+        axios.post('/login', userData)
+            .then(res => {
+                console.log(res.data);
+                this.setState({loading: false});
+                this.props.history.push('/');
+            })
+            .catch(err => {
+                this.setState({
+                    errors: err.response.data,
+                    loading: false,
+                    notifOpen: true
+                });
+            })
     }
 
     onChangeHandler = (e) => {
@@ -82,6 +113,7 @@ class Login extends Component {
 
     render() {
         const { classes } = this.props;
+        const { errors, loading } = this.state;
 
         return (
             <Grid container className={classes.windowContainer} direction="row" justify="center" alignContent="center">
@@ -104,9 +136,10 @@ class Login extends Component {
                                         className={classes.textField} 
                                         value={this.state.email} 
                                         onChange={this.onChangeHandler}
+                                        error={errors.email ? true : false}
+                                        helperText={errors.email}
                                         fullWidth
                                     />
-                                    
                                     <TextField 
                                         id="password" 
                                         name="password" 
@@ -115,6 +148,8 @@ class Login extends Component {
                                         className={classes.textField} 
                                         value={this.state.password} 
                                         onChange={this.onChangeHandler}
+                                        error={errors.password ? true : false}
+                                        helperText={errors.password}
                                         fullWidth
                                     />
                                     <Button
@@ -133,6 +168,15 @@ class Login extends Component {
                         </Grid>
                     </Grid>
                 <Grid item sm={2} md={4} />
+
+
+                <NotifSnackbar 
+                    variant='error'
+                    open={this.state.notifOpen}
+                    handleClose={this.handleClose}
+                    message={errors.error}
+                    onEntered={this.focus}
+                />
             </Grid>
         )
     }
