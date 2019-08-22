@@ -29,14 +29,15 @@ a {
 
 .loginForm {
   padding-top: 0;
-  padding-bottom: 10%;
+  padding-bottom: 5%;
+}
+
+.registerForm {
+  padding-top: 0;
+  padding-bottom: 5%;
 }
 
 .appTitle {
   padding-top: 45%;
-}
-
-.registerCaption {
-  padding-bottom: 10%;
 }
 

@@ -15,49 +15,12 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { minWidth } from '@material-ui/system';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
-const styles = {
-    windowContainer: {
-        textAlign: 'center',
-        marginTop: 50
-    },
-    paperGrid: {
-        marginTop: '15%'
-    },
-    logoPaper: {
-        borderRadius: '10px',
-        backgroundColor: 'rgb(11, 10, 14)',
-        minWidth: '75%',
-        position: 'absolute',
-        left: '12.5%',
-        top: '-15%'
-    },
-    formPaper: {
-        textAlign: 'center',
-        borderRadius: '10px',
-        backgroundColor: 'rgb(254, 192, 56)',
-        minHeight: '100%',
-        minWidth: '100%',
-        position: 'relative',
-        paddingBottom: '5%'
-    },
-    image: {
-        margin: '20px auto 10px auto'
-    },
-    textField: {
-        margin: '5px auto 5px auto',
-        minWidth: '50%',
-        width: '70%',
-        background: 'rgb(254, 192, 56)'
-    },
-    button: {
-        marginTop: 20,
-        width: '70%'
-    }
-}
-
+const styles = theme => ({
+    ...theme.styling
+});
 
 
 class Login extends Component {
@@ -93,6 +56,10 @@ class Login extends Component {
         axios.post('/login', userData)
             .then(res => {
                 console.log(res.data);
+
+                // Set the token in localStorage so if user refreshes they're still logged in
+                localStorage.setItem('FirebaseToken', `Bearer ${res.data.token}`);
+
                 this.setState({loading: false});
                 this.props.history.push('/');
             })
@@ -100,7 +67,10 @@ class Login extends Component {
                 this.setState({
                     errors: err.response.data,
                     loading: false,
-                    notifOpen: true
+                }, () => {
+                    if (this.state.errors.error) {
+                        this.setState({notifOpen: true});
+                    }
                 });
             })
     }
@@ -157,8 +127,16 @@ class Login extends Component {
                                         variant="outlined"
                                         color="primary"
                                         className={classes.button}
+                                        disabled={loading}
                                     >
                                         Login
+                                        
+                                        {loading && (
+                                            <CircularProgress 
+                                                size={30} 
+                                                className={classes.progress} 
+                                            />
+                                        )}
                                     </Button>
                                 </form>
                                 <Typography style={{marginBottom: '5%'}} variant="caption" color="textSecondary">
