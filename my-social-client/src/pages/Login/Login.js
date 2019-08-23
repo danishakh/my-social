@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import {Link as BrowserLink} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import appIcon from '../../images/buzzer.png';
-import axios from 'axios';
 
 // Components
 import NotifSnackbar from '../../components/NotifSnackbar';
@@ -20,7 +19,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 // Redux
 import { connect } from 'react-redux';
 import { loginUser } from '../../redux/actions/userActions';
-import { timingSafeEqual } from 'crypto';
 
 const styles = theme => ({
     ...theme.styling

@@ -1,5 +1,16 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI } from '../types';
+import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED } from '../types';
 import axios from 'axios';
+
+// Helper Function
+const setAuthorizationHeader = token => {
+    const firebaseToken = `Bearer ${token}`;
+    
+    // Set the token in localStorage so if user refreshes the page, they will still be logged in
+    localStorage.setItem('firebaseToken', firebaseToken);
+
+    // Add the token to every axios request header
+    axios.defaults.headers.common['Authorization'] = firebaseToken;
+}
 
 export const loginUser = (userData, history) => dispatch => {
 
@@ -10,12 +21,7 @@ export const loginUser = (userData, history) => dispatch => {
 
     axios.post('/login', userData)
         .then(res => {
-            const firebaseUserToken = `Bearer ${res.data.token}`;
-            // Add token to every axios request header
-            axios.defaults.headers.common['Authorization'] = firebaseUserToken;
-
-            // Set the token in localStorage so if user refreshes they're still logged in
-            localStorage.setItem('FirebaseToken', firebaseUserToken);
+            setAuthorizationHeader(res.data.token);
 
             // Dispatch these functions
             dispatch(getLoggedInUserData())
@@ -29,15 +35,7 @@ export const loginUser = (userData, history) => dispatch => {
                 type: SET_ERRORS,
                 payload: err.response.data
             });
-            // this.setState({
-            //     errors: err.response.data,
-            //     loading: false,
-            // }, () => {
-            //     if (this.state.errors.error) {
-            //         this.setState({notifOpen: true});
-            //     }
-            // });
-        })
+        });
 }
 
 export const getLoggedInUserData = () => dispatch => {
@@ -50,4 +48,38 @@ export const getLoggedInUserData = () => dispatch => {
             });
         })
         .catch(err => console.error(err));
+}
+
+export const registerUser = (newUserData, history) => dispatch => {
+
+    // Dispatch the loader
+    dispatch({
+        type: LOADING_UI
+    });
+
+    axios.post('/register', newUserData)
+        .then(res => {
+            setAuthorizationHeader(res.data.token);
+
+            // Dispatch these functions
+            dispatch(getLoggedInUserData())
+            dispatch({ type: CLEAR_ERRORS });
+
+            // Redirect user to homepage
+            history.push('/');
+        })
+        .catch(err => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: err.response.data
+            });
+        });
+}
+
+export const logoutUser = () => dispatch => {
+    // Delete token from localStorage
+    localStorage.removeItem('firebaseToken');
+    // Remove token from axios headers
+    delete axios.defaults.headers.common['Authorization'];
+    dispatch({ type: SET_UNAUTHENTICATED });
 }

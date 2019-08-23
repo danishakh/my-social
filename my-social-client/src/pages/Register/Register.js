@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import {Link as BrowserLink} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import appIcon from '../../images/buzzer.png';
-import axios from 'axios';
 
 // Components
 import NotifSnackbar from '../../components/NotifSnackbar';
@@ -16,6 +15,10 @@ import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
+// Redux
+import { connect } from 'react-redux';
+import { registerUser } from '../../redux/actions/userActions';
 
 
 const styles = theme => ({
@@ -42,9 +45,21 @@ class Register extends Component {
             password: "",
             confirmPassword: "",
             username: "",
-            loading: false,
             notifOpen: false,
             errors: {}
+        }
+    }
+
+    // Updating errors from Redux store and triggering Snackbar if needed
+    componentDidUpdate(prevProps) {
+        if (this.props.ui.errors !== prevProps.ui.errors) {
+            this.setState({
+                errors: this.props.ui.errors
+            }, () => {
+                if (this.props.ui.errors.error) {
+                    this.setState({ notifOpen: true });
+                }
+            });
         }
     }
 
@@ -67,26 +82,8 @@ class Register extends Component {
             confirmPassword: this.state.confirmPassword,
             username: this.state.username
         }
-        axios.post('/register', newUserData)
-            .then(res => {
-                console.log(res.data);
-
-                // Set the token in localStorage so if user refreshes they're still logged in
-                localStorage.setItem('FirebaseToken', `Bearer ${res.data.token}`);
-
-                this.setState({loading: false});
-                this.props.history.push('/');
-            })
-            .catch(err => {
-                this.setState({
-                    errors: err.response.data,
-                    loading: false,
-                }, () => {
-                    if (this.state.errors.error) {
-                        this.setState({notifOpen: true});
-                    }
-                });
-            })
+        
+        this.props.registerUser(newUserData, this.props.history);
     }
 
     onChangeHandler = (e) => {
@@ -96,8 +93,8 @@ class Register extends Component {
     }
 
     render() {
-        const { classes } = this.props;
-        const { errors, loading } = this.state;
+        const { classes, ui: { loading } } = this.props;
+        const { errors } = this.state;
 
         return (
             <Grid container className={classes.windowContainer} direction="row" justify="center" alignContent="center">
@@ -199,7 +196,15 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
+    ui: PropTypes.object.isRequired,
+    registerUser: PropTypes.func.isRequired
 }
 
-export default withStyles(styles)(Register);
+const mapStateToProps = state => ({
+    user: state.user,
+    ui: state.ui
+});
+
+export default connect(mapStateToProps, { registerUser })(withStyles(styles)(Register));
