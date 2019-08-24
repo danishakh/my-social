@@ -28,7 +28,7 @@ import AuthRoute from './utils/AuthRoute';
 
 const theme = createMuiTheme(customTheme);
 
-const token = localStorage.FirebaseToken;
+const token = localStorage.firebaseToken;
 if (token) {
   const decoded = jwtDecode(token);
   

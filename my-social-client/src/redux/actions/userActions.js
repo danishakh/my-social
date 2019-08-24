@@ -1,4 +1,4 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED } from '../types';
+import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED, LOADING_USER } from '../types';
 import axios from 'axios';
 
 // Helper Function
@@ -39,6 +39,8 @@ export const loginUser = (userData, history) => dispatch => {
 }
 
 export const getLoggedInUserData = () => dispatch => {
+    dispatch({ type: LOADING_USER });
+    
     axios.get('/user')
         .then(res => {
             // Set the user with the logged in user's data

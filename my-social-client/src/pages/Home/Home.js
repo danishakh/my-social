@@ -6,6 +6,8 @@ import Grid from '@material-ui/core/Grid';
 // Components
 import Post from '../../components/Post';
 import NotifSnackbar from '../../components/NotifSnackbar';
+import Profile from '../../components/Profile';
+
 
 class Home extends Component {
     constructor() {
@@ -18,7 +20,7 @@ class Home extends Component {
     }
     
     componentDidMount() {
-        this.setState({notifOpen: true});
+        // this.setState({ notifOpen: true });
         axios.get('/posts')
             .then(res => {
                 //console.log(res.data);
@@ -40,11 +42,11 @@ class Home extends Component {
             ) : <p>Loading...</p>
 
         return (
-            <Grid container spacing={6}>
-                <Grid item sm={3} xs={12}>
-                    Profile...
+            <Grid container spacing={6} justify='center' >
+                <Grid item lg={3} md={3} sm={6} xs={6}>
+                    <Profile />
                 </Grid>
-                <Grid item sm={6} xs={12}>
+                <Grid item lg={7} md={7} sm={10} xs={10}>
                     { latestPosts }
                 </Grid>
 
