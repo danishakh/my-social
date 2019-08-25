@@ -31,6 +31,19 @@ class Home extends Component {
             .catch(err => console.error(err));
     }
 
+    //TODO
+
+    // Trigger Snackbar after Update Succesful
+    // componentDidUpdate(prevProps) {
+    //     console.log('componentDidUpdate')
+    //     if (this.props.credentials !== prevProps.credentials) {
+    //         this.setState({
+    //             notifOpen: true
+    //         });
+    //         console.log('props updated');
+    //     }
+    // }
+
     // Snackbar Close
     handleClose = () => {
         this.setState({notifOpen: false})
@@ -54,7 +67,7 @@ class Home extends Component {
                     variant='success'
                     open={this.state.notifOpen}
                     handleClose={this.handleClose}
-                    message='Login Successful!'
+                    message='Update Successful!'
                     onEntered={this.focus}
                 />
             </Grid>

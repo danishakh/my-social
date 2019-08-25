@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
+import NotifSnackbar from '../NotifSnackbar';
 
 // Redux
 import { connect } from 'react-redux';
@@ -41,8 +42,7 @@ class EditProfile extends Component {
             bio: '',
             website: '',
             location: '',
-            open: false
-        }
+            open: false        }
     }
 
     handleDialogOpen = () => {
@@ -77,12 +77,16 @@ class EditProfile extends Component {
 
         this.props.editUserData(userData);
         this.handleDialogClose();
+        this.setState({
+            notifOpen: true
+        });
     }
 
     componentDidMount() {
         const { credentials } = this.props;
         this.mapUserDataToState(credentials);
     }
+
 
     render() {
         const { classes } = this.props;
