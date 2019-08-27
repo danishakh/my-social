@@ -23,6 +23,13 @@ html, body {
   margin: auto;
 }
 
+.nav-container svg {
+  color: #fff
+}
+.nav-container svg:hover {
+  color: rgb(254, 192, 56)
+}
+
 a {
   text-decoration: none;
 }

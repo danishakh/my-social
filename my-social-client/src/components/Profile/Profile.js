@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import EditProfile from '../EditProfile';
+import CustomIconButton from '../../utils/CustomIconButton';
 
 // MUI
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -13,9 +14,7 @@ import MuiLink from '@material-ui/core/Link';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import LinkIcon from '@material-ui/icons/Link';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
-import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
-import ToolTip from '@material-ui/core/Tooltip';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 
 // Redux
@@ -65,7 +64,10 @@ const styles = theme => ({
                 color: '#fff'
             },
             '& a': {
-                color: '#fff'
+                color: '#fff',
+                // '&:hover': {
+                //     color: 'rgb(254, 192, 56)'
+                // }
             }
         },
         '& hr': {
@@ -74,7 +76,7 @@ const styles = theme => ({
         },
         '& svg.button': {
             '&:hover': {
-                cursor: 'pointer'
+                cursor: 'pointer',
             }
         }
     },
@@ -130,11 +132,14 @@ class Profile extends Component {
                             onChange={this.updateImageHandler} 
                             hidden="hidden"
                         />
-                        <ToolTip placement='bottom-start' title='Edit Profile Image'>
-                            <IconButton style={{padding: '10px'}} onClick={this.handleEditImage} className={classes.iconButton}>
-                                <EditIcon  />
-                            </IconButton>
-                        </ToolTip>
+                        <CustomIconButton 
+                            placement="bottom-start" 
+                            toolTipTitle="Edit Image"
+                            onClick={this.handleEditImage}
+                            btnClassName={classes.iconButton}
+                        >
+                            <EditIcon  />
+                        </CustomIconButton>
                     </div>
                     <hr/>
                     <div className='profile-name-bio'>
@@ -165,12 +170,14 @@ class Profile extends Component {
                     </div>
 
                     {/* Logout Button */}
-                    <Tooltip title='Logout' placement='bottom'>
-                            <IconButton onClick={this.handleLogout} className={classes.iconButton}>
-                                <KeyboardReturn  />
-                            </IconButton>
-                    </Tooltip>
-
+                    <CustomIconButton 
+                            placement="bottom" 
+                            toolTipTitle="Logout"
+                            onClick={this.handleLogout}
+                            btnClassName={classes.iconButton}
+                        >
+                            <KeyboardReturn  />
+                        </CustomIconButton>
                     {/* Edit Profile */}
                     <EditProfile />
                 </div>
