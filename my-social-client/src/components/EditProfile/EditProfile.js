@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import NotifSnackbar from '../NotifSnackbar';
 
 // Redux
 import { connect } from 'react-redux';
@@ -21,15 +20,19 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 const styles = theme => ({
     ...theme.styling,
-    button: {
-        float: 'right'
-    },
     dialogTextField: {
         margin: '10px auto 10px auto',
         background: 'rgb(254, 192, 56)'
     },
     editProfileDialog: {
         background: 'rgb(254, 192, 56)'
+    },
+    iconButton: {
+        color: '#fff',
+        float: 'right',
+        '&:hover': {
+            color: 'rgb(254, 192, 56)'
+        }
     }
 });
 
@@ -42,7 +45,8 @@ class EditProfile extends Component {
             bio: '',
             website: '',
             location: '',
-            open: false        }
+            open: false        
+        }
     }
 
     handleDialogOpen = () => {
@@ -93,8 +97,8 @@ class EditProfile extends Component {
         return (
             <Fragment>
                 <Tooltip title="Edit Profile" placement="bottom">
-                    <IconButton onClick={this.handleDialogOpen} className={classes.button}>
-                        <EditIcon color='primary' />
+                    <IconButton onClick={this.handleDialogOpen} className={classes.iconButton}>
+                        <EditIcon/>
                     </IconButton>
                 </Tooltip>
                 <Dialog

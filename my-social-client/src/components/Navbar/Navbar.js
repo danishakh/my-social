@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+// Redux
+import { connect } from 'react-redux';
 
 // MUI Components
 import AppBar from '@material-ui/core/AppBar';
@@ -21,4 +25,12 @@ class Navbar extends Component {
     }
 }
 
-export default Navbar;
+Navbar.propTypes = {
+    authenticated: PropTypes.bool.isRequired
+} 
+
+const mapStateToProps = state => ({
+    authenticated: state.user.authenticated
+});
+
+export default connect(mapStateToProps)(Navbar);

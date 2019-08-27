@@ -26,7 +26,15 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = theme => ({
     paper: {
-        padding: 15
+        padding: 15,
+        border: '1px solid #71A0D4',
+        backgroundColor: 'rgb(33,32,44)'
+    },
+    iconButton: {
+        color: '#fff',
+        '&:hover': {
+            color: 'rgb(254, 192, 56)'
+        }
     },
     profile: {
         '& .image-wrapper': {
@@ -39,24 +47,25 @@ const styles = theme => ({
             }
         },
         '& .profile-image': {
-            // width: 200,
-            // height: 200,
             objectFit: 'cover',
             maxWidth: '100%',
             maxHeight: '100%',
             borderRadius: '50%'
         },
         '& .profile-name-bio': {
-            textAlign: 'center'
+            textAlign: 'center',
+            color: '#fff'
         },
         '& .profile-details': {
             marginTop: 15,
             textAlign: 'left',
+            color: '#fff',
             '& span, svg': {
-                verticalAlign: 'middle'
+                verticalAlign: 'middle',
+                color: '#fff'
             },
             '& a': {
-                color: theme.palette.primary.main
+                color: '#fff'
             }
         },
         '& hr': {
@@ -122,14 +131,14 @@ class Profile extends Component {
                             hidden="hidden"
                         />
                         <ToolTip placement='bottom-start' title='Edit Profile Image'>
-                            <IconButton style={{padding: '10px'}} onClick={this.handleEditImage} className="button">
-                                <EditIcon color="primary" />
+                            <IconButton style={{padding: '10px'}} onClick={this.handleEditImage} className={classes.iconButton}>
+                                <EditIcon  />
                             </IconButton>
                         </ToolTip>
                     </div>
                     <hr/>
                     <div className='profile-name-bio'>
-                        <MuiLink component={Link} to={`/users/${username}`} color='primary' variant='h5'>
+                        <MuiLink component={Link} to={`/users/${username}`} color='secondary' variant='h5'>
                             @{username}
                         </MuiLink>
                         <hr/>
@@ -157,8 +166,8 @@ class Profile extends Component {
 
                     {/* Logout Button */}
                     <Tooltip title='Logout' placement='bottom'>
-                            <IconButton onClick={this.handleLogout}>
-                                <KeyboardReturn color='primary' />
+                            <IconButton onClick={this.handleLogout} className={classes.iconButton}>
+                                <KeyboardReturn  />
                             </IconButton>
                     </Tooltip>
 

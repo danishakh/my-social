@@ -53,7 +53,7 @@ export default {
       button: {
           marginTop: 20,
           width: '70%',
-          position: 'relative'
+          position: 'relative',
       },
       progress: {
           position: 'absolute'

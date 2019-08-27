@@ -10,19 +10,29 @@ import Card from '@material-ui/core/Card';
 // import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import { Typography } from '@material-ui/core';
+import Typography  from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
 
 
 const styles = {
     card: {
         display: 'flex',
-        marginBottom: 15
+        marginBottom: 10,
+        backgroundColor: 'rgb(33,32,44)',
+        border: '1px solid #71A0D4',
+        color: '#fff',
+        '& .createdAtCaption': {
+            color: 'grey',
+            marginTop: 1
+        }
     },
     image: {
-        minWidth: 150
+        width: 80,
+        height: 80,
+        margin: 5
     },
     content: {
-        padding: 20,
+        padding: 10,
         objectFit: 'cover'      // so that your images don't stretch
     }
 }
@@ -36,19 +46,22 @@ class Post extends Component {
         return (
             <div>
                 <Card className={classes.card}>
-                    <CardMedia 
-                        image={userImage}
+                    {/* <CardMedia 
+                        component={Avatar}
+                        src={userImage}
                         title="Profile Image"
                         className={classes.image}
-                    />
+                    /> */}
+                    <Avatar src={userImage} alt={username} className={classes.image} />
                     <CardContent className={classes.content}>
                         <Typography 
                             variant="h6" 
                             component={Link} 
                             to={`/users/${username}`} 
-                            color="primary">{username}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">{dayjs(createdAt).fromNow()}</Typography>
+                            color="secondary">
+                            @{username}
+                        </Typography> <br/>
+                        <Typography variant="caption" className='createdAtCaption' >{dayjs(createdAt).fromNow()}</Typography><br/>
                         <Typography variant="body1">{body}</Typography>
                     </CardContent>
                 </Card>

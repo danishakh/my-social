@@ -59,7 +59,7 @@ class Home extends Component {
                 <Grid item lg={3} md={3} sm={6} xs={6}>
                     <Profile />
                 </Grid>
-                <Grid item lg={7} md={7} sm={10} xs={10}>
+                <Grid item lg={6} md={6} sm={10} xs={10}>
                     { latestPosts }
                 </Grid>
 
