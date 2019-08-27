@@ -44,7 +44,7 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 // Remove that like from our likes array
-                likes: state.likes.filter(like => like.postId === action.payload.postId)
+                likes: state.likes.filter(like => like.postId !== action.payload.postId)
             }
         default:
             return state;
