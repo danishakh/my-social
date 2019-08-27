@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -8,27 +9,22 @@ import Post from '../../components/Post';
 import NotifSnackbar from '../../components/NotifSnackbar';
 import Profile from '../../components/Profile';
 
+// Redux
+import { connect } from 'react-redux';
+import { getPosts } from '../../redux/actions/dataActions';
 
 class Home extends Component {
     constructor() {
         super();
 
         this.state = {
-            posts: null,
             notifOpen: false
         }
     }
     
     componentDidMount() {
         // this.setState({ notifOpen: true });
-        axios.get('/posts')
-            .then(res => {
-                //console.log(res.data);
-                this.setState({
-                    posts: res.data
-                })
-            })
-            .catch(err => console.error(err));
+        this.props.getPosts();
     }
 
     //TODO
@@ -50,8 +46,10 @@ class Home extends Component {
     }
     
     render() {
-        let latestPosts = this.state.posts ? (
-            this.state.posts.map(post => <Post key={post.postId} post={post} />)
+        const { posts, loading } = this.props.data;
+
+        let latestPosts = !loading ? (
+           posts.map(post => <Post key={post.postId} post={post} />)
             ) : <p>Loading...</p>
 
         return (
@@ -75,4 +73,13 @@ class Home extends Component {
     }
 }
 
-export default Home;
+Home.propTypes = {
+    getPosts: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+    data: state.data
+})
+
+export default connect(mapStateToProps, { getPosts })(Home);
