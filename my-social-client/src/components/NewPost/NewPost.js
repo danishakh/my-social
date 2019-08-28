@@ -63,41 +63,31 @@ class NewPost extends Component {
     }
 
     // Updating errors from Redux store
-    // componentDidUpdate(prevProps) {
-    //     if (this.props.ui.errors !== prevProps.ui.errors) {
-    //         console.log('prev',prevProps.ui.errors);
-    //         console.log('now', this.props.ui.errors)
-    //         this.setState({
-    //             errors: this.props.ui.errors
-    //         });
-    //     }
+    componentDidUpdate(prevProps) {
+        // Helper Function to check if an object is empty
+        function isEmpty(obj) {
+            for(var key in obj) {
+                if(obj.hasOwnProperty(key))
+                    return false;
+            }
+            return true;
+        }
 
-    //     if (this.props.ui.errors === {}) {
-    //         // if (!this.props.ui.loading) {
-    //         //     this.setState({ body: '', open: false, errors: {} });
-    //         // }
-    //         console.log('reached')
-    //     }
-    // }
-
-    // static getDerivedStateFromProps(nextProps, prevState) {
-    //     function isEmpty(obj) {
-    //         for(var key in obj) {
-    //             if(obj.hasOwnProperty(key))
-    //                 return false;
-    //         }
-    //         return true;
-    //     }
-        
-
-    //     if(nextProps.ui.errors !== prevState.errors) {
-    //         return {
-    //             errors: nextProps.ui.errors
-    //         }
-    //     }
-        
-    //     return null;
-    // }
+        if (prevProps.ui.errors !== this.props.ui.errors) {
+            if(isEmpty(this.props.ui.errors)) {
+                this.setState({
+                    body: '',
+                    open: false,
+                    errors: {}
+                });
+            }
+            else {
+                this.setState({
+                    errors: this.props.ui.errors
+                });
+            }   
+        }
+    }
 
     dialogOpenHandler = () => {
         this.setState({ open: true })
