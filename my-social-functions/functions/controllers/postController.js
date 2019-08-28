@@ -1,4 +1,5 @@
 const { db } = require('../utils/admin');
+const validatePostInput = require("../validation/validatePostInput");
 
 
 // Get All Posts - (/api/posts)
@@ -34,6 +35,15 @@ exports.addPost = (req, res) => {
     if(req.method !== 'POST') {
         return res.status(400).json({ error: 'Method not allowed!'});
     }
+
+    // Form validation
+    const { errors, isValid } = validatePostInput(req.body);
+
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
 
     const newPost = {
         body: req.body.body,

@@ -8,9 +8,9 @@ import { connect } from 'react-redux';
 import { editUserData } from '../../redux/actions/userActions';
 
 // MUI
-import Tooltip  from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
+import DoneIcon from '@material-ui/icons/Done';
+import CancelIcon from '@material-ui/icons/Clear';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -25,14 +25,36 @@ const styles = theme => ({
         margin: '10px auto 10px auto',
         background: 'rgb(254, 192, 56)'
     },
-    editProfileDialog: {
+    dialogContent: {
+        background: 'rgb(254, 192, 56)',
+        color: '#21202C'
+    },
+    dialogTitle: {
+        background: 'rgb(254, 192, 56)',
+        color: '#21202C'
+    },
+    dialogActions: {
         background: 'rgb(254, 192, 56)'
     },
-    iconButton: {
-        color: '#fff',
+    editIconButton: {
+        color: '#f5f5f4',
         float: 'right',
         '&:hover': {
             color: 'rgb(254, 192, 56)'
+        }
+    },
+    cancelIconButton: {
+        color: '#21202C',
+        float: 'right',
+        '&:hover': {
+            color: '#f44336'
+        }
+    },
+    doneIconButton: {
+        color: '#21202C',
+        float: 'right',
+        '&:hover': {
+            color: '#57ab78'
         }
     }
 });
@@ -50,12 +72,12 @@ class EditProfile extends Component {
         }
     }
 
-    handleDialogOpen = () => {
+    dialogOpenHandler = () => {
         this.setState({ open: true });
         this.mapUserDataToState(this.props.credentials);
     }
 
-    handleDialogClose = () => {
+    dialogCloseHandler = () => {
         this.setState({ open: false });
     }
 
@@ -81,7 +103,7 @@ class EditProfile extends Component {
         };
 
         this.props.editUserData(userData);
-        this.handleDialogClose();
+        this.dialogCloseHandler();
         this.setState({
             notifOpen: true
         });
@@ -100,19 +122,19 @@ class EditProfile extends Component {
                 <CustomIconButton 
                     toolTipTitle="Edit Profile" 
                     placement="bottom" 
-                    onClick={this.handleDialogOpen}
-                    btnClassName={classes.iconButton}
+                    onClick={this.dialogOpenHandler}
+                    btnClassName={classes.editIconButton}
                 >
                     <EditIcon/>
                 </CustomIconButton>
                 <Dialog
                     open={this.state.open}
-                    onClose={this.handleDialogClose}
+                    onClose={this.dialogCloseHandler}
                     fullWidth
                     maxWidth='xs'
                 >
-                    <DialogTitle className={classes.editProfileDialog}>Edit Profile</DialogTitle>
-                    <DialogContent className={classes.editProfileDialog}>
+                    <DialogTitle className={classes.dialogTitle}>Edit Profile</DialogTitle>
+                    <DialogContent className={classes.dialogContent}>
                         <form>
                             <TextField
                                 name="bio"
@@ -148,13 +170,24 @@ class EditProfile extends Component {
                             />
                         </form>
                     </DialogContent>
-                    <DialogActions className={classes.editProfileDialog}>
-                        <Button onClick={this.handleDialogClose} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={this.onSubmitHandler} color="primary">
-                            Update
-                        </Button>
+                    <DialogActions className={classes.dialogActions}>
+                        <CustomIconButton 
+                            toolTipTitle="Cancel" 
+                            placement="bottom" 
+                            onClick={this.dialogCloseHandler}
+                            btnClassName={classes.cancelIconButton}
+                        >
+                            <CancelIcon />
+                        </CustomIconButton>
+
+                        <CustomIconButton 
+                            toolTipTitle="Update" 
+                            placement="bottom" 
+                            onClick={this.onSubmitHandler}
+                            btnClassName={classes.doneIconButton}
+                        >
+                            <DoneIcon />
+                        </CustomIconButton>
                     </DialogActions>
                 </Dialog>
             </Fragment>

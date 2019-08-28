@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
 import CustomIconButton from '../../utils/CustomIconButton';
+import DeletePostButton from '../DeletePostButton';
 
 
 // MUI
@@ -14,7 +15,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography  from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
-import ChatIcon from '@material-ui/icons/Chat';
+import CommentIcon from '@material-ui/icons/Comment';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
@@ -25,6 +26,7 @@ import { likePost, unlikePost } from '../../redux/actions/dataActions';
 
 const styles = {
     card: {
+        position: 'relative',
         display: 'flex',
         marginBottom: 10,
         backgroundColor: 'rgb(33,32,44)',
@@ -85,11 +87,13 @@ class Post extends Component {
             classes, 
             post : { body, createdAt, userImage, username, postId, likeCount, commentCount },
             user: {
-                authenticated
-            } 
+                authenticated,
+                credentials
+            }
         
         } = this.props;
         
+        // Like Button Logic
         const likeButton = !authenticated ? (
             <CustomIconButton toolTipTitle="Like" btnClassName={classes.unlikedIconButton}>
                 <Link to="/login">
@@ -107,7 +111,12 @@ class Post extends Component {
                     <FavoriteBorder />
                 </CustomIconButton>
             )
-        )
+        );
+
+        // Delete Button Logic
+        const deleteButton = authenticated && username === credentials.username ? (
+            <DeletePostButton postId={postId} />
+        ) : null
 
         return (
             <div>
@@ -127,16 +136,19 @@ class Post extends Component {
                             color="secondary">
                             @{username}
                         </Typography> <br/>
+                        
+                        {deleteButton}
+
                         <Typography variant="caption" className='createdAtCaption' >{dayjs(createdAt).fromNow()}</Typography><br/>
                         <Typography variant="body1">{body}</Typography>
-
+                        
                         {likeButton}
-                        <span>{likeCount} Likes</span>
+                        <span>{likeCount}</span>
 
                         <CustomIconButton toolTipTitle="Comment" placement='bottom' btnClassName={classes.iconButton}>
-                            <ChatIcon />
+                            <CommentIcon />
                         </CustomIconButton>
-                        <span>{commentCount} Comments</span>
+                        <span>{commentCount}</span>
                     </CardContent>
                 </Card>
             </div>

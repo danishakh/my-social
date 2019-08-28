@@ -20,7 +20,6 @@ import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 // Redux
 import { connect } from 'react-redux';
 import { logoutUser, uploadImage } from '../../redux/actions/userActions';
-import Tooltip from '@material-ui/core/Tooltip';
 
 
 const styles = theme => ({

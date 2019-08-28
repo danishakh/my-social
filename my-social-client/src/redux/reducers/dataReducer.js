@@ -1,4 +1,4 @@
-import { SET_POSTS, LIKE_POST, UNLIKE_POST, LOADING_DATA } from '../types';
+import { SET_POSTS, LIKE_POST, UNLIKE_POST, LOADING_DATA, DELETE_POST, ADD_POST } from '../types';
 
 const initialState = {
     posts: [],
@@ -28,6 +28,22 @@ export default function(state=initialState, action) {
             state.posts[postIndex] = action.payload
             return {
                 ...state,
+            }
+        case DELETE_POST:
+            // When we delete, we get the postId in the response of the deleted post
+            // Find the index of that post in the posts array, and remove that post
+            let deleteIndex = state.posts.findIndex(post => post.postId === action.payload);
+            state.posts.splice(deleteIndex, 1);
+            return {
+                ...state
+            }
+        case ADD_POST: 
+            return {
+                ...state,
+                posts: [
+                    action.payload,
+                    ...state.posts
+                ]
             }
         default:
             return {

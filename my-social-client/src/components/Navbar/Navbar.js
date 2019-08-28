@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import CustomIconButton from '../../utils/CustomIconButton';
+import NewPost from '../NewPost';
 
 // Redux
 import { connect } from 'react-redux';
@@ -9,30 +10,34 @@ import { connect } from 'react-redux';
 // MUI Components
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
 import HomeIcon from '@material-ui/icons/Home'
 import NotificationIcon from '@material-ui/icons/Notifications'
+import withStyles from '@material-ui/core/styles/withStyles';
 
-
+const styles = {
+    navIconButton: {
+        color: '#f5f5f4',
+        '&:hover': {
+            color: 'rgb(254, 192, 56)'
+        }
+    },
+}
 class Navbar extends Component {
     render() {
-        const { authenticated } = this.props;
+        const { classes, authenticated } = this.props;
 
         return (
             <AppBar position="fixed">
                 <Toolbar className="nav-container">
                     {authenticated ? (
                         <Fragment>
-                            <CustomIconButton toolTipTitle="New Buzz">
-                                <AddIcon />
-                            </CustomIconButton>
+                            <NewPost />
                             <Link to="/">
-                                <CustomIconButton toolTipTitle="Home">
+                                <CustomIconButton toolTipTitle="Home" btnClassName={classes.navIconButton}>
                                     <HomeIcon />
                                 </CustomIconButton>
                             </Link>
-                            <CustomIconButton toolTipTitle="Notifications">
+                            <CustomIconButton toolTipTitle="Notifications" btnClassName={classes.navIconButton}>
                                 <NotificationIcon />
                             </CustomIconButton>
                         </Fragment>
@@ -48,11 +53,12 @@ class Navbar extends Component {
 }
 
 Navbar.propTypes = {
-    authenticated: PropTypes.bool.isRequired
+    authenticated: PropTypes.bool.isRequired,
+    classes: PropTypes.object.isRequired
 } 
 
 const mapStateToProps = state => ({
     authenticated: state.user.authenticated
 });
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps)(withStyles(styles)(Navbar));

@@ -1,4 +1,4 @@
-import { SET_POSTS, LIKE_POST, UNLIKE_POST, LOADING_DATA } from '../types';
+import { SET_POSTS, LIKE_POST, UNLIKE_POST, LOADING_UI, LOADING_DATA, DELETE_POST, ADD_POST, SET_ERRORS, CLEAR_ERRORS } from '../types';
 import axios from 'axios';
 
 // Get All Posts
@@ -42,4 +42,42 @@ export const unlikePost = postId => dispatch => {
             })
         })
         .catch(err => console.error(err));
+}
+
+// Delete a Post
+export const deletePost = postId => dispatch => {
+    axios.delete(`/post/${postId}`)
+        .then(() => {
+            dispatch({
+                type: DELETE_POST,
+                payload: postId
+            });
+        })
+        .catch(err => console.error(err));
+}
+
+// Add a Post
+export const addPost = newPost => dispatch => {
+    dispatch({ type: LOADING_UI });
+    axios.post('/post', newPost)
+        .then(res => {
+            dispatch({ 
+                type: ADD_POST,
+                payload: res.data
+            });
+            dispatch({ type: CLEAR_ERRORS })
+        })
+        .catch(err => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: err.response.data
+            })
+        })
+}
+
+// Clear Errors in NewPost Dialog
+export const clearErrors = () => dispatch => {
+    dispatch({
+        type: CLEAR_ERRORS
+    });
 }
