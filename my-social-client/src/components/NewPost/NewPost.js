@@ -72,7 +72,7 @@ class NewPost extends Component {
             }
             return true;
         }
-
+        
         if (prevProps.ui.errors !== this.props.ui.errors) {
             if(isEmpty(this.props.ui.errors)) {
                 this.setState({

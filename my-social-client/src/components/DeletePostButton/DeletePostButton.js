@@ -10,6 +10,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteIcon from '@material-ui/icons/DeleteOutline';
+import DoneIcon from '@material-ui/icons/Done';
+import CancelIcon from '@material-ui/icons/Clear';
 
 // Redux
 import { connect } from 'react-redux';
@@ -21,6 +23,27 @@ const styles = {
         left: '90%',
         top: '0%',
         color: '#f44336'
+    },
+    dialogTitle: {
+        background: 'rgb(254, 192, 56)',
+        color: '#21202C'
+    },
+    dialogActions: {
+        background: 'rgb(254, 192, 56)'
+    },
+    cancelIconButton: {
+        color: '#21202C',
+        float: 'right',
+        '&:hover': {
+            color: '#f44336'
+        }
+    },
+    doneIconButton: {
+        color: '#21202C',
+        float: 'right',
+        '&:hover': {
+            color: '#57ab78'
+        }
     }
 }
 
@@ -60,14 +83,14 @@ class DeletePostButton extends Component {
                     fullWidth
                     maxWidth="xs"
                 >
-                    <DialogTitle>Are you sure you want to delete?</DialogTitle>
-                    <DialogActions>
-                        <Button onClick={this.handleDialogClose}>
-                            Cancel
-                        </Button>
-                        <Button onClick={this.deletePost}>
-                            Delete
-                        </Button>
+                    <DialogTitle className={classes.dialogTitle}>Are you sure you want to delete?</DialogTitle>
+                    <DialogActions className={classes.dialogActions}>
+                        <CustomIconButton toolTipTitle='Cancel' onClick={this.handleDialogClose} btnClassName={classes.cancelIconButton}>
+                            <CancelIcon />
+                        </CustomIconButton>
+                        <CustomIconButton toolTipTitle='Confirm' onClick={this.deletePost} btnClassName={classes.doneIconButton}>
+                            <DoneIcon />
+                        </CustomIconButton>
                     </DialogActions>
                 </Dialog>
             </Fragment>
