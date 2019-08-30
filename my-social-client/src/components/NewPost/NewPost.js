@@ -5,9 +5,6 @@ import CustomIconButton from '../../utils/CustomIconButton';
 
 
 // MUI
-import EditIcon from '@material-ui/icons/Edit';
-import DoneIcon from '@material-ui/icons/Done';
-import CancelIcon from '@material-ui/icons/Clear';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -72,7 +69,7 @@ class NewPost extends Component {
             }
             return true;
         }
-        
+
         if (prevProps.ui.errors !== this.props.ui.errors) {
             if(isEmpty(this.props.ui.errors)) {
                 this.setState({

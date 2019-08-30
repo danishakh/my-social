@@ -6,12 +6,11 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
 import CustomIconButton from '../../utils/CustomIconButton';
 import DeletePostButton from '../DeletePostButton';
+import PostDialog from '../PostDialog';
 
 
 // MUI
 import Card from '@material-ui/core/Card';
-// import CardActionArea from '@material-ui/core/CardActionArea';
-// import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography  from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
@@ -121,12 +120,6 @@ class Post extends Component {
         return (
             <div>
                 <Card className={classes.card}>
-                    {/* <CardMedia 
-                        component={Avatar}
-                        src={userImage}
-                        title="Profile Image"
-                        className={classes.image}
-                    /> */}
                     <Avatar src={userImage} alt={username} className={classes.image} />
                     <CardContent className={classes.content}>
                         <Typography 
@@ -139,16 +132,19 @@ class Post extends Component {
                         
                         {deleteButton}
 
-                        <Typography variant="caption" className='createdAtCaption' >{dayjs(createdAt).fromNow()}</Typography><br/>
+                        <Typography variant="caption" className='createdAtCaption'>{dayjs(createdAt).fromNow()}</Typography><br/>
                         <Typography variant="body1">{body}</Typography>
                         
                         {likeButton}
                         <span>{likeCount}</span>
 
-                        <CustomIconButton toolTipTitle="Comment" placement='bottom' btnClassName={classes.iconButton}>
+                        {/* <CustomIconButton toolTipTitle="Comment" placement='bottom' btnClassName={classes.iconButton}>
                             <CommentIcon />
-                        </CustomIconButton>
+                        </CustomIconButton> */}
+                        <PostDialog postId={postId} username={username} />
                         <span>{commentCount}</span>
+
+                        
                     </CardContent>
                 </Card>
             </div>
