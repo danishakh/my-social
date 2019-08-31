@@ -51,6 +51,11 @@ const styles = theme => ({
     closeButton: {
         position: 'absolute',
         left: '90%'
+    },
+    spinnerDiv: {
+        textAlign: 'center',
+        marginTop: 30,
+        marginBottom: 30
     }
 })
 
@@ -80,7 +85,9 @@ class PostDialog extends Component {
         } = this.props;
 
         const dialogPost = loading ? (
-            <CircularProgress size={150} />
+            <div className={classes.spinnerDiv}>
+                <CircularProgress size={150} thickness={2} />
+            </div>
         ) : (
             <Grid container spacing={2}>
                 <Grid item lg={5} md={5} sm={5}>
@@ -95,9 +102,7 @@ class PostDialog extends Component {
                     >
                     @{username}
                     </Typography>
-
                     <hr className={classes.hrStyle} />
-                    
                     <Typography 
                         variant="caption" 
                         className='createdAtCaption'>{dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import CustomIconButton from '../../utils/CustomIconButton';
 import DeletePostButton from '../DeletePostButton';
 import PostDialog from '../PostDialog';
-
+import LikeButton from '../LikeButton';
 
 // MUI
 import Card from '@material-ui/core/Card';
@@ -21,7 +21,6 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 // Redux 
 import { connect } from 'react-redux';
-import { likePost, unlikePost } from '../../redux/actions/dataActions';
 
 const styles = {
     card: {
@@ -46,38 +45,10 @@ const styles = {
         '&:last-child': {
             paddingBottom: 0
         }
-    },
-    iconButton: {
-        color: '#fff',
-        '&:hover': {
-            color: 'rgb(254, 192, 56)'
-        }
-    },
-    likedIconButton: {
-        color: '#CD4C78'
-    },
-    unlikedIconButton: {
-        color: '#fff'
     }
 }
 
 class Post extends Component {
-
-    postIsLiked = () => {
-        // Check if we have a likes array in our user object (to see if a user is even logged in)
-        if (this.props.user.likes && this.props.user.likes.find(like => like.postId === this.props.post.postId)) {
-            return true;
-        }
-        else return false;
-    };
-
-    likePost = () => {
-        this.props.likePost(this.props.post.postId);
-    }
-
-    unlikePost = () => {
-        this.props.unlikePost(this.props.post.postId);
-    }
 
     render() {
 
@@ -91,26 +62,6 @@ class Post extends Component {
             }
         
         } = this.props;
-        
-        // Like Button Logic
-        const likeButton = !authenticated ? (
-            <CustomIconButton toolTipTitle="Like" btnClassName={classes.unlikedIconButton}>
-                <Link to="/login">
-                    <FavoriteBorder />
-                </Link>
-            </CustomIconButton>
-        ) : (
-            this.postIsLiked() ? (
-                <CustomIconButton toolTipTitle="Unlike" onClick={this.unlikePost} btnClassName={classes.likedIconButton}>
-                    <FavoriteIcon />
-                </CustomIconButton>
-            ) :
-            (
-                <CustomIconButton toolTipTitle="Like" onClick={this.likePost} btnClassName={classes.unlikedIconButton}>
-                    <FavoriteBorder />
-                </CustomIconButton>
-            )
-        );
 
         // Delete Button Logic
         const deleteButton = authenticated && username === credentials.username ? (
@@ -135,12 +86,10 @@ class Post extends Component {
                         <Typography variant="caption" className='createdAtCaption'>{dayjs(createdAt).fromNow()}</Typography><br/>
                         <Typography variant="body1">{body}</Typography>
                         
-                        {likeButton}
+                        <LikeButton postId={postId} />
+
                         <span>{likeCount}</span>
 
-                        {/* <CustomIconButton toolTipTitle="Comment" placement='bottom' btnClassName={classes.iconButton}>
-                            <CommentIcon />
-                        </CustomIconButton> */}
                         <PostDialog postId={postId} username={username} />
                         <span>{commentCount}</span>
 
@@ -153,8 +102,6 @@ class Post extends Component {
 }
 
 Post.propTypes = {
-    likePost: PropTypes.func.isRequired,
-    unlikePost: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     post: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired
@@ -164,9 +111,5 @@ const mapStateToProps = state => ({
     user: state.user
 });
 
-const mapActionsToProps = {
-    likePost, 
-    unlikePost
-}
 
-export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Post));
+export default connect(mapStateToProps)(withStyles(styles)(Post));
