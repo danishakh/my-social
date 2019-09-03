@@ -1,4 +1,4 @@
-import { SET_POSTS, LIKE_POST, UNLIKE_POST, LOADING_DATA, DELETE_POST, ADD_POST, SET_POST } from '../types';
+import { SET_POSTS, LIKE_POST, UNLIKE_POST, LOADING_DATA, DELETE_POST, ADD_POST, SET_POST, SUBMIT_COMMENT } from '../types';
 
 const initialState = {
     posts: [],
@@ -26,6 +26,10 @@ export default function(state=initialState, action) {
             let postIndex = state.posts.findIndex((post) => post.postId === action.payload.postId)
             // and update that post
             state.posts[postIndex] = action.payload
+            // If we like/unlike a post that is opened, then update that post as well with the new like/unlike
+            if (state.post.postId === action.payload.postId) {
+                state.post = action.payload;
+            } 
             return {
                 ...state,
             }
@@ -49,6 +53,17 @@ export default function(state=initialState, action) {
             return {
                 ...state,
                 post: action.payload
+            }
+        case SUBMIT_COMMENT:
+            return {
+                ...state,
+                post: {
+                    ...state.post,
+                    comments: [
+                        action.payload,
+                        ...state.post.comments
+                    ]
+                }
             }
         default:
             return {

@@ -3,34 +3,29 @@ import PropTypes from 'prop-types';
 import CustomIconButton from '../../utils/CustomIconButton';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
+import LikeButton from '../LikeButton/LikeButton';
+import Comments from '../Comments';
+import CommentForm from '../CommentForm';
 
 //MUI
 import withStyles from '@material-ui/core/styles/withStyles';
-// import EditIcon from '@material-ui/icons/Edit';
-// import DoneIcon from '@material-ui/icons/Done';
-// import CancelIcon from '@material-ui/icons/Clear';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import CommentIcon from '@material-ui/icons/Comment';
 
 
 // Redux
 import { connect } from 'react-redux';
-import { getPost } from '../../redux/actions/dataActions';
-import theme from '../../utils/theme';
+import { getPost, clearErrors } from '../../redux/actions/dataActions';
 
-const styles = theme => ({
-    ...theme.styling,
+
+const styles = {
     commentIconButton: {
-        color: '#fff',
+        color: '#f5f5f4',
         '&:hover': {
             color: 'rgb(254, 192, 56)'
         }
@@ -46,18 +41,21 @@ const styles = theme => ({
         objectFit: 'contain'
     },
     dialogContent: {
-        padding: 10
+        padding: 15,
+        background: '#21202C',
+        color: '#F5F5F4'
     },
     closeButton: {
         position: 'absolute',
-        left: '90%'
+        left: '90%',
+        color: '#f5f5f4'
     },
     spinnerDiv: {
         textAlign: 'center',
         marginTop: 30,
         marginBottom: 30
     }
-})
+}
 
 class PostDialog extends Component {
     constructor() {
@@ -75,12 +73,13 @@ class PostDialog extends Component {
 
     dialogCloseHandler = () => {
         this.setState({ open: false })
+        this.props.clearErrors();
     }
 
     render() {
         const { 
             classes, 
-            post: { postId, body, createdAt, likeCount, commentCount, userImage, username },
+            post: { postId, body, createdAt, likeCount, commentCount, userImage, username, comments },
             ui: { loading }
         } = this.props;
 
@@ -90,10 +89,10 @@ class PostDialog extends Component {
             </div>
         ) : (
             <Grid container spacing={2}>
-                <Grid item lg={5} md={5} sm={5}>
+                <Grid item lg={4} md={4} sm={4}>
                     <img src={userImage} alt='Profile Image' className={classes.profileImage} />
                 </Grid>
-                <Grid item lg={7} md={7} sm={7}>
+                <Grid item lg={8} md={8} sm={8}>
                     <Typography
                         component={Link}
                         color='secondary'
@@ -111,8 +110,17 @@ class PostDialog extends Component {
                     <hr className={classes.hrStyle} />
 
                     <Typography variant="body1">{body}</Typography>
+                    <LikeButton postId={postId} />
+                    <span>{ likeCount } Likes</span>
 
+                    <CustomIconButton toolTipTitle='Comments' btnClassName={classes.commentIconButton}>
+                        <CommentIcon /> 
+                    </CustomIconButton>
+                    <span> { commentCount } Comments</span>
                 </Grid>
+                {/* Post Comments Section */}
+                <CommentForm postId={postId} />
+                <Comments comments={comments} />
             </Grid>
         )
 
@@ -126,7 +134,7 @@ class PostDialog extends Component {
                     open={this.state.open}
                     onClose={this.dialogCloseHandler}
                     fullWidth
-                    maxWidth='xs'
+                    maxWidth='sm'
                 >
                     <CustomIconButton 
                         toolTipTitle='Close' 
@@ -147,6 +155,7 @@ class PostDialog extends Component {
 
 PostDialog.propTypes = {
     getPost: PropTypes.func.isRequired,
+    clearErrors: PropTypes.func.isRequired,
     postId: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     post: PropTypes.object.isRequired,
@@ -159,7 +168,8 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = {
-    getPost
+    getPost,
+    clearErrors
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(PostDialog));

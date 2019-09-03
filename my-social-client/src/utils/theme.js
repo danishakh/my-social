@@ -57,6 +57,16 @@ export default {
       },
       progress: {
           position: 'absolute'
+      },
+      invisibleSeparator: {
+        border: '0.1px none',
+        margin: 5
+      },
+      visibleSeparator: {
+        maxWidth: '85%',
+        borderBottom: '0.1px solid #71A0D4',
+        marginTop: '2%',
+        marginBottom: '1%'
       }
     }
   }

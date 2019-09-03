@@ -17,7 +17,7 @@ const styles = {
         color: '#CD4C78'
     },
     unlikedIconButton: {
-        color: '#fff'
+        color: '#f5f5f4'
     }
 }
 
@@ -41,7 +41,7 @@ export class LikeButton extends Component {
 
     render() {
 
-        const { classes, user: { authenticated }} = this.props;
+        const { classes, user: { authenticated } } = this.props;
 
         // Like Button Logic
         const likeButton = !authenticated ? (

@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
-import CustomIconButton from '../../utils/CustomIconButton';
 import DeletePostButton from '../DeletePostButton';
 import PostDialog from '../PostDialog';
 import LikeButton from '../LikeButton';
@@ -14,9 +13,6 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography  from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
-import CommentIcon from '@material-ui/icons/Comment';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 
 // Redux 
