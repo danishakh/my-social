@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import CustomIconButton from '../../utils/CustomIconButton';
 import NewPost from '../NewPost';
+import Notifications from '../Notifications';
 
 // Redux
 import { connect } from 'react-redux';
@@ -11,7 +12,6 @@ import { connect } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import HomeIcon from '@material-ui/icons/Home'
-import NotificationIcon from '@material-ui/icons/Notifications'
 import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = {
@@ -37,13 +37,11 @@ class Navbar extends Component {
                                     <HomeIcon />
                                 </CustomIconButton>
                             </Link>
-                            <CustomIconButton toolTipTitle="Notifications" btnClassName={classes.navIconButton}>
-                                <NotificationIcon />
-                            </CustomIconButton>
+                                <Notifications />
                         </Fragment>
                     ) : (
                         <Fragment>
-
+                            
                         </Fragment>
                     )}
                 </Toolbar>

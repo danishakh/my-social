@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Post from '../../components/Post';
 import NotifSnackbar from '../../components/NotifSnackbar';
 import Profile from '../../components/Profile';
+import PostSkeleton from '../../utils/PostSkeleton';
 
 // Redux
 import { connect } from 'react-redux';
@@ -49,7 +50,9 @@ class Home extends Component {
 
         let latestPosts = !loading ? (
            posts.map(post => <Post key={post.postId} post={post} />)
-            ) : <p>Loading...</p>
+            ) : (
+                <PostSkeleton />
+            )
 
         return (
             <Grid container spacing={6} justify='center' >

@@ -78,19 +78,25 @@ class PostDialog extends Component {
     dialogOpenHandler = () => {
         // Twitter Like URL Displaying - whenever we open a specific postDialog, the URL would change to newPath
         // the path that we have currently
-        let oldPath = window.location.pathname;
+        let oldURLPath = window.location.pathname;
         const { username, postId } = this.props;
         // the path that we want to go to - to open the post via notifications
-        const newPath = `/users/${username}/post/${postId}`
+        const newURLPath = `/users/${username}/post/${postId}`
         window.history.pushState(null, null, newURLPath);
 
+        // Edge Case: If we reload and go to the exact newURLPath, there is no oldURLPath to go back to when dialog is closed
+        // Let's direct the user back to the 'user' who's post was just viewed
+        if (oldURLPath === newURLPath) {
+            oldURLPath = `/users/${username}`;
+        }
+        
         this.setState({ open: true, oldURLPath, newURLPath });
         this.props.getPost(this.props.postId);
     }
 
     dialogCloseHandler = () => {
         // Reverse from the openHandler, we revert back to the old path once the postDialog is closed
-        window.history.pushState(null, null, oldURLPath);
+        window.history.pushState(null, null, this.state.oldURLPath);
 
         this.setState({ open: false })
         this.props.clearErrors();

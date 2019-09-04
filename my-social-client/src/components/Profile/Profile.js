@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import EditProfile from '../EditProfile';
 import CustomIconButton from '../../utils/CustomIconButton';
+import ProfileSkeleton from '../../utils/ProfileSkeleton';
 
 // MUI
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -193,7 +194,7 @@ class Profile extends Component {
                         </Button>
                     </div>
                 </Paper>
-            )) : (<p>Loading...</p>)
+            )) : <ProfileSkeleton />
 
 
         // we will return profileComponent based on whether we are loading and/or authenticated

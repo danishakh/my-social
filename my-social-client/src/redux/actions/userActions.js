@@ -1,4 +1,4 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED, LOADING_USER } from '../types';
+import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED, LOADING_USER, MARK_NOTIF_READ } from '../types';
 import axios from 'axios';
 
 // Helper Function
@@ -102,4 +102,16 @@ export const logoutUser = () => dispatch => {
     // Remove token from axios headers
     delete axios.defaults.headers.common['Authorization'];
     dispatch({ type: SET_UNAUTHENTICATED });
+}
+
+export const markNotificationsRead = notifIds => dispatch => {
+    axios.post('/notifications', notifIds)
+        .then(res => {
+            dispatch({
+                type: MARK_NOTIF_READ
+            });
+        })
+        .catch(err => {
+            console.error(err);
+        });
 }

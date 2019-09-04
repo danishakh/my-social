@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import axios from 'axios'
 import Post from '../../components/Post';
 import StaticProfile from '../../components/StaticProfile';
+import PostSkeleton from '../../utils/PostSkeleton';
+import ProfileSkeleton from '../../utils/ProfileSkeleton';
 
 // MUI
 import Grid from '@material-ui/core/Grid'
@@ -45,7 +47,7 @@ export class UserProfile extends Component {
         const { postIdParam } = this.state;
 
         const userPosts = loading ? (
-            <p>Loading Posts...</p>
+            <PostSkeleton />
         ) : posts === null ? (
             <p>No Posts!</p>
         ) : !postIdParam ? (
@@ -65,7 +67,7 @@ export class UserProfile extends Component {
                 <Grid item lg={3} md={3} sm={6} xs={6}>
                     {/* check if profile exists and has loaded */}
                     {this.state.profile === null ? (
-                        <p>Loading Profile...</p>
+                        <ProfileSkeleton />
                     ) : (
                         <StaticProfile profile={this.state.profile} />
                     )}
