@@ -1,5 +1,6 @@
 import { SET_POSTS, LIKE_POST, UNLIKE_POST, LOADING_UI, LOADING_DATA, DELETE_POST, ADD_POST, SET_ERRORS, CLEAR_ERRORS, SET_POST, STOP_LOADING_UI, SUBMIT_COMMENT } from '../types';
 import axios from 'axios';
+import Axios from 'axios';
 
 // Get All Posts
 export const getPosts = () => dispatch => {
@@ -115,4 +116,22 @@ export const submitComment = (postId, commentData) => dispatch => {
                 payload: err.response.data
             });
         });
+}
+
+// Get a User's Profile
+export const getUserProfile = username => dispatch => {
+    dispatch({ type: LOADING_DATA })
+    axios.get(`/user/${username}`)
+        .then(res => {
+            dispatch({
+                type: SET_POSTS,
+                payload: res.data.posts
+            });
+        })
+        .catch(() => {
+            dispatch({
+                type: SET_POSTS,
+                payload: null
+            });
+        })
 }
