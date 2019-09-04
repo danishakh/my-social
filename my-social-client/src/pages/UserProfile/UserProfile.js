@@ -42,13 +42,22 @@ export class UserProfile extends Component {
     }
     render() {
         const { posts, loading } = this.props.data;
+        const { postIdParam } = this.state;
 
         const userPosts = loading ? (
             <p>Loading Posts...</p>
         ) : posts === null ? (
             <p>No Posts!</p>
-        ) : (
+        ) : !postIdParam ? (
             posts.map(post => <Post key={post.postId} post={post} />)
+        ) : (
+            posts.map(post => {
+                if(post.postId !== postIdParam)
+                    return <Post key={post.postId} post={post} />
+                else {
+                    return <Post key={post.postId} post={post} openDialog/>
+                }
+            })
         )
 
         return (

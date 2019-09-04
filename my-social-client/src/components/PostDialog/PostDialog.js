@@ -62,16 +62,36 @@ class PostDialog extends Component {
         super();
 
         this.state = {
-            open: false
+            open: false,
+            oldURLPath: '',
+            newURLPath: ''
+        }
+    }
+
+    // Need to check if openDialog props is passed as true, and open the PostDialog (notifications)
+    componentDidMount() {
+        if (this.props.openDialog) {
+            this.dialogOpenHandler();
         }
     }
 
     dialogOpenHandler = () => {
-        this.setState({ open: true });
+        // Twitter Like URL Displaying - whenever we open a specific postDialog, the URL would change to newPath
+        // the path that we have currently
+        let oldPath = window.location.pathname;
+        const { username, postId } = this.props;
+        // the path that we want to go to - to open the post via notifications
+        const newPath = `/users/${username}/post/${postId}`
+        window.history.pushState(null, null, newURLPath);
+
+        this.setState({ open: true, oldURLPath, newURLPath });
         this.props.getPost(this.props.postId);
     }
 
     dialogCloseHandler = () => {
+        // Reverse from the openHandler, we revert back to the old path once the postDialog is closed
+        window.history.pushState(null, null, oldURLPath);
+
         this.setState({ open: false })
         this.props.clearErrors();
     }
