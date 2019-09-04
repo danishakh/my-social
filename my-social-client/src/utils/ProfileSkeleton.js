@@ -10,6 +10,7 @@ import LinkIcon from '@material-ui/icons/Link'
 import CalendarIcon from '@material-ui/icons/CalendarToday'
 
 const styles = theme => ({
+    ...theme.styling,
     paper: {
         padding: 15,
         border: '1px solid #71A0D4',
@@ -17,48 +18,33 @@ const styles = theme => ({
     },
     profile: {
         '& .image-wrapper': {
-            textAlign: 'center',
-            position: 'relative',
-            '& button': {
-                position: 'absolute',
-                top: '80%',
-                left: '75%'
-            }
+            textAlign: 'center'
         },
         '& .profile-image': {
-            objectFit: 'cover',
-            maxWidth: '80%',
-            maxHeight: '80%',
+            width: 180,
+            height: 180,
             borderRadius: '50%'
-        },
-        '& .profile-name-bio': {
-            textAlign: 'center',
-            color: '#fff'
-        },
-        '& .profile-details': {
-            marginTop: 15,
-            textAlign: 'left',
-            color: '#fff',
-            '& span, svg': {
-                verticalAlign: 'middle',
-                color: '#fff'
-            },
-            '& a': {
-                color: '#fff',
-                // '&:hover': {
-                //     color: 'rgb(254, 192, 56)'
-                // }
-            }
-        },
-        '& hr': {
-            border: 'none',
-            margin: '0 0 2% 0'
-        },
-        '& svg.button': {
-            '&:hover': {
-                cursor: 'pointer',
-            }
         }
+    },
+    username: {
+        height: 30,
+        backgroundColor: 'rgba(254,192,56)',
+        width: 80,
+        margin: '0 auto 7px auto'
+    },
+    fullLine: {
+        height: 15,
+        backgroundColor: '#c0c0c0',
+        width: '100%',
+        marginBottom: 15
+    },
+    details: {
+        color: '#f5f5f4',
+        marginBottom: 10,
+        fontSize: 12
+    },
+    icons: {
+        marginRight: 5
     }
 })
 
@@ -71,20 +57,26 @@ const ProfileSkeleton = props => {
                 <div className='image-wrapper'>
                     <img src={NoImg} alt='noImg' className='profile-image'/>
                 </div>
-                <hr/>
-                <div className='profile-name-bio'></div>
+                <hr className={classes.invisibleSeparator}/>
                 <div className='profile-details'>
                     <div className={classes.username}></div>
-                    <hr/>
+                    <hr className={classes.invisibleSeparator}/>
                     <div className={classes.fullLine}></div>
                     <div className={classes.fullLine}></div>
                 </div>
-                <hr/>
-                <LocationIcon /> <span>Location</span>
-                <hr/>
-                <LinkIcon /><span>https://website.com</span>
-                <hr/>
-                <CalendarIcon /><span>Joined Date</span>
+                <hr className={classes.invisibleSeparator}/>
+                <div className={classes.details}>
+                    <LocationIcon className={classes.icons}/>
+                    <hr className={classes.invisibleSeparator}/>
+                </div>
+                <div className={classes.details}>
+                    <LinkIcon className={classes.icons} />
+                    <hr className={classes.invisibleSeparator}/>
+                </div>
+                <div className={classes.details}>
+                    <CalendarIcon className={classes.icons} />
+                    <hr className={classes.invisibleSeparator}/>
+                </div>
             </div>
         </Paper>
     )
