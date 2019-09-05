@@ -116,6 +116,7 @@ class Notifications extends Component {
                 <Tooltip placement='top' title='Notifications'>
                     <IconButton 
                         aria-owns={anchorElement ? 'simple-menu' : undefined}
+                        aria-controls="menu-list-grow"
                         aria-haspopup='true'
                         onClick={this.notifOpenHandler}
                     >

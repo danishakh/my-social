@@ -34,7 +34,7 @@ export class Comments extends Component {
                     return (
                         <Fragment key={createdAt}>
                             <Grid item sm={12}>
-                                <Grid container style={{marginBottom: 10}}>
+                                <Grid container style={{marginBottom: 15, marginTop: 5}}>
                                     <Grid item sm={3}>
                                         <img src={userImage} alt='comment' className={classes.commentImage} />
                                     </Grid>
