@@ -107,7 +107,7 @@ class Notifications extends Component {
                 })
             ) : (
                 <MenuItem onClick={this.notifCloseHandler} style={{backgroundColor: 'rgb(33, 32,44)'}}>
-                    No New Notifications!
+                    <Typography style={{color: '#f5f5f4'}} variant='caption'>No New Notifications!</Typography>
                 </MenuItem>
             )
 

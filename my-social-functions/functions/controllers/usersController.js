@@ -41,7 +41,7 @@ exports.registerUser = (req, res) => {
     }
 
     // Default image for every user that signs up
-    const noImg = 'no-image.png';
+    const noImg = 'no-img.png';
 
     db
         .doc(`/users/${newUser.username}`)
