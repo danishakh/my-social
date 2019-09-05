@@ -12,8 +12,12 @@ const store = createStore(
   initialState,
   compose(
     applyMiddleware(...middleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    // Check if the browser is Chrome, else do not use redux devtools extension enhancer or else app will not render on Safari/other browsers
+    window.navigator.userAgent.includes('Chrome') 
+    ? window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    : compose
   )
 );
 
 export default store;
+
