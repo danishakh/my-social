@@ -28,10 +28,33 @@ export default function(state=initialState, action) {
             state.posts[postIndex] = action.payload
             // If we like/unlike a post that is opened, then update that post as well with the new like/unlike
             if (state.post.postId === action.payload.postId) {
-                state.post = action.payload;
+                state.post.likeCount = action.payload.likeCount;
             } 
             return {
                 ...state,
+                post: {
+                    ...state.post
+                }
+            }
+        case SUBMIT_COMMENT:
+            // Update the commentCount in 'post'
+            let count = state.post.commentCount + 1;
+            // Update the commentCount in 'posts'
+            let postIndex2 = state.posts.findIndex((post) => post.postId === action.payload.postId);
+            state.posts[postIndex2].commentCount = count;
+            return {
+                ...state,
+                posts: [
+                    ...state.posts
+                ],
+                post: {
+                    ...state.post,
+                    comments: [
+                        action.payload,
+                        ...state.post.comments
+                    ],
+                    commentCount: count
+                }
             }
         case DELETE_POST:
             // When we delete, we get the postId in the response of the deleted post
@@ -53,17 +76,6 @@ export default function(state=initialState, action) {
             return {
                 ...state,
                 post: action.payload
-            }
-        case SUBMIT_COMMENT:
-            return {
-                ...state,
-                post: {
-                    ...state.post,
-                    comments: [
-                        action.payload,
-                        ...state.post.comments
-                    ]
-                }
             }
         default:
             return {

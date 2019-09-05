@@ -10,6 +10,13 @@ const middleware = [thunk];
 const store = createStore(
   rootReducer,
   initialState,
+  // compose(
+  //   applyMiddleware(...middleware),
+  //   // Check if the browser is Chrome, else do not use redux devtools extension enhancer or else app will not render on Safari/other browsers
+  //   window.navigator.userAgent.includes('Chrome') 
+  //   ? window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  //   : compose
+  // )
   compose(
     applyMiddleware(...middleware),
     // Check if the browser has redux devtools, else do not use redux devtools extension enhancer or app will not render on the browsers

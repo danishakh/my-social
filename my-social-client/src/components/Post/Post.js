@@ -83,7 +83,6 @@ class Post extends Component {
                         <Typography variant="body1">{body}</Typography>
                         
                         <LikeButton postId={postId} />
-
                         <span>{likeCount}</span>
 
                         <PostDialog postId={postId} username={username} openDialog={this.props.openDialog} />
