@@ -29,6 +29,9 @@ import AuthRoute from './utils/AuthRoute';
 
 const theme = createMuiTheme(customTheme);
 
+// When not in dev, tell Axios to always request the resources from this baseURL instead of localhost 
+axios.defaults.baseURL = 'https://us-central1-my-social-ff134.cloudfunctions.net/api';
+
 const token = localStorage.firebaseToken;
 if (token) {
   const decoded = jwtDecode(token);

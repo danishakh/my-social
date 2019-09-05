@@ -45,11 +45,11 @@ export class LikeButton extends Component {
 
         // Like Button Logic
         const likeButton = !authenticated ? (
-            <CustomIconButton toolTipTitle="Like" btnClassName={classes.unlikedIconButton}>
-                <Link to="/login">
+            <Link to="/login">
+                <CustomIconButton toolTipTitle="Like" btnClassName={classes.unlikedIconButton}>
                     <FavoriteBorder />
-                </Link>
-            </CustomIconButton>
+                </CustomIconButton>
+            </Link>
         ) : (
             this.postIsLiked() ? (
                 <CustomIconButton toolTipTitle="Unlike" onClick={this.unlikePost} btnClassName={classes.likedIconButton}>

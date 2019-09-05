@@ -81,10 +81,11 @@ const styles = theme => ({
         }
     },
     buttons: {
-        textAlign: 'center',
-        '& a': {
-            margin: '5% 5%'
-        }
+        textAlign: 'center'
+    },
+    welcomeMsg: {
+        color: 'rgb(254,192,56)',
+        fontFamily: 'Long Cang, cursive'
     }
 });
 
@@ -183,13 +184,14 @@ class Profile extends Component {
                 </div>
             </Paper>) : (   // if not authenticated
                 <Paper className={classes.paper}>
-                    <Typography variant='body2' align='center'>
-                    No Profile Found! Please Login</Typography>
+                    <Typography variant='h5' align='center' className={classes.welcomeMsg}>
+                        Welcome to Buzzer!
+                    </Typography>
                     <div className={classes.buttons}>
-                        <Button variant='contained' color='primary' component={Link} to='/login'>
+                        <Button style={{marginBottom: 10, marginTop: 10}} fullWidth variant='outlined' color='secondary' component={Link} to='/login'>
                             Login
                         </Button>
-                        <Button variant='contained' color='primary' component={Link} to='/register'>
+                        <Button fullWidth  variant='outlined' color='secondary' component={Link} to='/register'>
                             Register
                         </Button>
                     </div>

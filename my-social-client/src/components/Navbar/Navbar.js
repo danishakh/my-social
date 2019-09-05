@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import CustomIconButton from '../../utils/CustomIconButton';
 import NewPost from '../NewPost';
 import Notifications from '../Notifications';
+import buzzerLogo from '../../images/buzzer.png'
 
 // Redux
 import { connect } from 'react-redux';
@@ -13,6 +14,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import HomeIcon from '@material-ui/icons/Home'
 import withStyles from '@material-ui/core/styles/withStyles';
+import MuiLink from '@material-ui/core/Link'
 
 const styles = {
     navIconButton: {
@@ -21,6 +23,19 @@ const styles = {
             color: 'rgb(254, 192, 56)'
         }
     },
+    logo: {
+        width: '30%',
+        height: '30%'
+    },
+    logoLinkWrapper: {
+        maxWidth: 60,
+        height: 60,
+        justifyContent: 'center'
+    },
+    logoAuth: {
+        width: '100%',
+        height: '100%'
+    }
 }
 class Navbar extends Component {
     render() {
@@ -28,20 +43,20 @@ class Navbar extends Component {
 
         return (
             <AppBar position="fixed">
-                <Toolbar className="nav-container">
+                <Toolbar className="nav-container" style={{justifyContent: 'center', textAlign: 'center'}}>
                     {authenticated ? (
                         <Fragment>
                             <NewPost />
-                            <Link to="/">
-                                <CustomIconButton toolTipTitle="Home" btnClassName={classes.navIconButton}>
-                                    <HomeIcon />
-                                </CustomIconButton>
+                            <Link to="/" className={classes.logoLinkWrapper}>
+                                <img src={buzzerLogo} className={classes.logoAuth} alt="buzzer-logo" />
                             </Link>
-                                <Notifications />
+                            <Notifications />
                         </Fragment>
                     ) : (
                         <Fragment>
-                            
+                            <Link to="/">
+                                <img src={buzzerLogo} className={classes.logo} alt="buzzer-logo"  />
+                            </Link>
                         </Fragment>
                     )}
                 </Toolbar>

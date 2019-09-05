@@ -21,7 +21,10 @@ import { connect } from 'react-redux';
 import { loginUser } from '../../redux/actions/userActions';
 
 const styles = theme => ({
-    ...theme.styling
+    ...theme.styling,
+    paperGrid: {
+        marginTop: 120
+    }
 });
 
 
@@ -84,7 +87,7 @@ class Login extends Component {
                         <Grid item sm>
                             <Paper elevation={20} className={classes.formPaper}>
                                 <Paper elevation={20} className={classes.logoPaper}>
-                                    <img src={appIcon} alt="buzzer-bee" className={classes.image} />
+                                    <img src={appIcon} alt="buzzer-logo" className={classes.image} />
                                 </Paper>
 
                                 <Typography style={{fontFamily: '"Long Cang", cursive'}} variant="h3" className="appTitle">buzzer</Typography>

@@ -6,6 +6,9 @@ const app = require('express')();
 // Authentication Middleware
 const firebaseAuth = require('./utils/firebaseAuth');
 
+const cors = require('cors');
+app.use(cors());
+
 const { db } = require('./utils/admin');
 
 // Controllers
