@@ -116,7 +116,7 @@ class PostDialog extends Component {
         ) : (
             <Grid container spacing={2}>
                 <Grid item lg={4} md={4} sm={4}>
-                    <img src={userImage} alt='Profile Image' className={classes.profileImage} />
+                    <img src={userImage} alt='Profile' className={classes.profileImage} />
                 </Grid>
                 <Grid item lg={8} md={8} sm={8}>
                     <Typography

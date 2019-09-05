@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import CustomIconButton from '../../utils/CustomIconButton';
 import NewPost from '../NewPost';
 import Notifications from '../Notifications';
 import buzzerLogo from '../../images/buzzer.png'
@@ -12,9 +11,7 @@ import { connect } from 'react-redux';
 // MUI Components
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import HomeIcon from '@material-ui/icons/Home'
 import withStyles from '@material-ui/core/styles/withStyles';
-import MuiLink from '@material-ui/core/Link'
 
 const styles = {
     navIconButton: {
