@@ -23,7 +23,7 @@ import { connect } from 'react-redux';
 import { getPost, clearErrors } from '../../redux/actions/dataActions';
 
 
-const styles = {
+const styles = theme => ({
     commentIconButton: {
         color: '#f5f5f4',
         '&:hover': {
@@ -55,7 +55,7 @@ const styles = {
         marginTop: 30,
         marginBottom: 30
     }
-}
+})
 
 class PostDialog extends Component {
     constructor() {

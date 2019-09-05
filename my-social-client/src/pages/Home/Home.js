@@ -56,20 +56,12 @@ class Home extends Component {
 
         return (
             <Grid container spacing={6} justify='center' >
-                <Grid item lg={3} md={3} sm={6} xs={6}>
+                <Grid item lg={3} md={3} sm={8} xs={8}>
                     <Profile />
                 </Grid>
                 <Grid item lg={6} md={6} sm={10} xs={10}>
                     { latestPosts }
                 </Grid>
-
-                <NotifSnackbar 
-                    variant='success'
-                    open={this.state.notifOpen}
-                    handleClose={this.handleClose}
-                    message='Update Successful!'
-                    onEntered={this.focus}
-                />
             </Grid>
         )
     }

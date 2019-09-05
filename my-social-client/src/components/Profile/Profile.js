@@ -86,6 +86,11 @@ const styles = theme => ({
     welcomeMsg: {
         color: 'rgb(254,192,56)',
         fontFamily: 'Long Cang, cursive'
+    },
+    profileDetails: {
+        [theme.breakpoints.down('sm')]: {
+            fontSize:9
+        }
     }
 });
 
@@ -148,13 +153,13 @@ class Profile extends Component {
                             @{username}
                         </MuiLink>
                         <hr/>
-                        {bio && <Typography variant="caption">{bio}</Typography>}
+                        {bio && <Typography variant="caption" className={classes.bio}>{bio}</Typography>}
                         <hr/>
                     </div>
                     <div className='profile-details'>
                         {location && (
                             <Fragment>
-                                <LocationIcon color='primary'/> <Typography variant='overline'>{location}</Typography>
+                                <LocationIcon color='primary'/> <Typography variant='overline' className={classes.profileDetails}>{location}</Typography>
                                 <hr/>
                             </Fragment>
                         )}
@@ -162,12 +167,12 @@ class Profile extends Component {
                             <Fragment>
                                 <LinkIcon color='primary'/>
                                 <a href={website} target='_blank' rel="noopener noreferrer">
-                                <Typography variant='overline'>{' '}{website}</Typography></a>
+                                <Typography variant='overline' className={classes.profileDetails}>{' '}{website}</Typography></a>
                                 <hr/>
                             </Fragment>
                         )}
                         <CalendarIcon color='primary' />{' '}
-                        <Typography variant="overline">Joined {dayjs(createdAt).format('MMM YYYY')}</Typography>
+                        <Typography variant="overline" className={classes.profileDetails}>Joined {dayjs(createdAt).format('MMM YYYY')}</Typography>
                     </div>
 
                     {/* Logout Button */}
