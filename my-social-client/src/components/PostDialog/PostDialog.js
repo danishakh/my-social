@@ -98,9 +98,17 @@ class PostDialog extends Component {
         // Reverse from the openHandler, we revert back to the old path once the postDialog is closed
         window.history.pushState(null, null, this.state.oldURLPath);
 
+        const { username, commentCount, postId } = this.props;
+
         this.setState({ open: false })
         this.props.clearErrors();
-        this.props.getPosts();
+        if (window.location.pathname === '/') {
+            this.props.getPosts();
+        }
+        else if (window.location.pathname === `/users/${username}`) {
+            // TODO: Need to display all updated posts by this user
+        }
+        
     }
 
     render() {

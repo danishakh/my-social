@@ -46,12 +46,16 @@ export class UserProfile extends Component {
         const { posts, loading } = this.props.data;
         const { postIdParam } = this.state;
 
+        // If loading
         const userPosts = loading ? (
             <PostSkeleton />
+        // Else if no posts
         ) : posts === null ? (
             <p>No Posts!</p>
+        // Else if no postIdParameter passed then just display the posts by this user
         ) : !postIdParam ? (
             posts.map(post => <Post key={post.postId} post={post} />)
+        // Else list all the posts by this user, and open the PostDialog on the post which has a postId of postIdParameter (got that from when we click a notification)
         ) : (
             posts.map(post => {
                 if(post.postId !== postIdParam)
