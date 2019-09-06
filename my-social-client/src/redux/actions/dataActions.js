@@ -104,11 +104,13 @@ export const getPost = postId => dispatch => {
 export const submitComment = (postId, commentData) => dispatch => {
     axios.post(`/post/${postId}/comment`, commentData)
         .then(res => {
+            //console.log(res.data);
             dispatch({
                 type: SUBMIT_COMMENT,
                 payload: res.data
             });
             dispatch(clearErrors());
+            // dispatch(getPosts());
         })
         .catch(err => {
             dispatch({

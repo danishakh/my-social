@@ -20,7 +20,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 
 // Redux
 import { connect } from 'react-redux';
-import { getPost, clearErrors } from '../../redux/actions/dataActions';
+import { getPost, getPosts, clearErrors } from '../../redux/actions/dataActions';
 
 
 const styles = theme => ({
@@ -100,6 +100,7 @@ class PostDialog extends Component {
 
         this.setState({ open: false })
         this.props.clearErrors();
+        this.props.getPosts();
     }
 
     render() {
@@ -181,6 +182,7 @@ class PostDialog extends Component {
 
 PostDialog.propTypes = {
     getPost: PropTypes.func.isRequired,
+    getPosts: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired,
     postId: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
@@ -195,6 +197,7 @@ const mapStateToProps = state => ({
 
 const mapActionsToProps = {
     getPost,
+    getPosts,
     clearErrors
 }
 

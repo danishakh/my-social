@@ -41,7 +41,9 @@ export default function(state=initialState, action) {
             let count = state.post.commentCount + 1;
             // Update the commentCount in 'posts'
             let postIndex2 = state.posts.findIndex((post) => post.postId === action.payload.postId);
-            state.posts[postIndex2].commentCount = count;
+            //state.posts[postIndex2] = action.payload.postData;
+            state.posts[postIndex2].commentCount += 1;
+            //console.log(state.posts[postIndex2]);
             return {
                 ...state,
                 posts: [

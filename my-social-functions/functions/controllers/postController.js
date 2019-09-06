@@ -115,12 +115,15 @@ exports.addCommentToPost = (req, res) => {
         userImage: req.user.imageUrl
     }
 
+    //let postData = {};
+
     // Check if this post exists
     db.doc(`/posts/${req.params.postId}`).get()
         .then(doc => {
             if(!doc.exists) {
                 res.status(404).json({ error: 'Post not found!' })
             }
+            
             // Increase commentCount
             return doc.ref.update({ commentCount: doc.data().commentCount + 1 });
         })
@@ -128,7 +131,7 @@ exports.addCommentToPost = (req, res) => {
             return db.collection('comments').add(newComment)
         })
         .then(() => {
-            res.json(newComment);
+            return res.json(newComment);
         })
         .catch(err => {
             console.error(err);
