@@ -145,12 +145,14 @@ exports.onUserImageChange = functions.region('us-central1').firestore.document('
 // When a post is deleted, delete all the corresponding comments, likes and notifications
 exports.onPostDelete = functions.region('us-central1').firestore.document('/posts/{postId}')
     .onDelete((snapshot, context) => {
+        // context has details about our request url
         const postId = context.params.postId;
         const batch = db.batch();
 
-        console.log(snapshot);
-        console.log(context);
+        //console.log(snapshot);
+        //console.log(context);
         
+        // get the comments for this postId and delete them
         return db.collection('comments').where('postId', '==', postId).get()
             .then(data => {
                 data.forEach(doc => {
@@ -158,12 +160,14 @@ exports.onPostDelete = functions.region('us-central1').firestore.document('/post
                 });
                 return db.collection('likes').where('postId', '==', postId).get()
             })
+            // get the likes for this postId and delete them
             .then(data => {
                 data.forEach(doc => {
                     batch.delete(db.doc(`/likes/${doc.id}`));
                 });
                 return db.collection('notifications').where('postId', '==', postId).get()
             })
+            // get the notifications for this postId and delete them
             .then(data => {
                 data.forEach(doc => {
                     batch.delete(db.doc(`/notifications/${doc.id}`));

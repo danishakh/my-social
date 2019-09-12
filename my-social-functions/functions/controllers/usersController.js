@@ -75,6 +75,7 @@ exports.registerUser = (req, res) => {
             };
 
             // REMEMBER: 'username' is our main ID for our users documents
+            // Persist the user in our database
             return db.doc(`/users/${newUser.username}`).set(userCredentials);
         })
         // return token
@@ -194,6 +195,7 @@ exports.getLoggedInUserDetails = (req, res) => {
                 return db.collection('likes').where('username', '==', req.user.username).get()  // get likes of our user from likes collection
             }
         })
+        // get all of this user's likes so we can show full heart/empty heart
         .then(data => {
             userData.likes = [];
             data.forEach(doc => {
@@ -205,6 +207,7 @@ exports.getLoggedInUserDetails = (req, res) => {
                 .limit(10)
                 .get()
         })
+        // get all the notifications for this user
         .then(data => {
             // add our notifications to the userData object which we will return as response
             userData.notifications = [];
@@ -297,6 +300,7 @@ exports.markNotificationsRead = (req, res) => {
     // batch write - when we want to update multiple documents in firebase
     let batch = db.batch();
 
+    // update all the notifications passed in the request as read
     req.body.forEach(notificationId => {
         const notification = db.doc(`/notifications/${notificationId}`);
         batch.update(notification, { read: true });

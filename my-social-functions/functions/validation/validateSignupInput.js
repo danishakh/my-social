@@ -12,7 +12,7 @@ module.exports = function validateSignupInput(data) {
     data.password = !isEmpty(data.password) ? data.password : "";
     data.confirmPassword = !isEmpty(data.confirmPassword) ? data.confirmPassword : "";
 
-    // Name checks
+    // Username checks
     if (Validator.isEmpty(data.username)) {
         errors.username = "Username is required";
     }
