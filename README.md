@@ -7,7 +7,7 @@ This is a completely server-less social media app which can be considered as a '
 
 ## Technologies:
 ### BackEnd
-- Firebase Cloud Functions, Storage, Database, Hosting
+- Firebase Cloud Functions, Cloud Storage, Cloud Firestore, Authentication, Hosting
 - Express
 - Busboy
 
