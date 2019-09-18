@@ -22,7 +22,7 @@ export default function(state=initialState, action) {
         case LIKE_POST:
         case UNLIKE_POST:
             // When we like/unlike a post, we get the updated post object back in the response
-            // Find the post inside posts array in redux, that has the postId of our payload postId
+            // Find that post inside posts array in redux, that has the postId of our payload postId
             let postIndex = state.posts.findIndex((post) => post.postId === action.payload.postId)
             // and update that post
             state.posts[postIndex] = action.payload

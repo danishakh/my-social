@@ -103,9 +103,6 @@ class EditProfile extends Component {
 
         this.props.editUserData(userData);
         this.dialogCloseHandler();
-        this.setState({
-            notifOpen: true
-        });
     }
 
     componentDidMount() {

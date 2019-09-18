@@ -26,12 +26,13 @@ import UserProfile from './pages/UserProfile';
 import Navbar from './components/Navbar';
 import AuthRoute from './utils/AuthRoute';
 
-
+// MUI Theme
 const theme = createMuiTheme(customTheme);
 
-// When not in dev, tell Axios to always request the resources from this baseURL instead of localhost 
+// Tell Axios to always request the resources from this baseURL instead of localhost 
 axios.defaults.baseURL = 'https://us-central1-my-social-ff134.cloudfunctions.net/api';
 
+// Set the firebaseToken
 const token = localStorage.firebaseToken;
 if (token) {
   const decoded = jwtDecode(token);
@@ -46,7 +47,7 @@ if (token) {
     store.dispatch({ type: SET_AUTHENTICATED });
     // When browser is refreshed, axios clears the header so we set it again here
     axios.defaults.headers.common['Authorization'] = token;
-    // Get the Logged In User Data then (based on token in header)
+    // Get the Logged In User's Data then (based on token in header)
     store.dispatch(getLoggedInUserData());
   }
 }

@@ -99,14 +99,15 @@ class Profile extends Component {
     updateImageHandler = (e) => {
         // when the user selects the file, e.target puts it in an array 'files'
         const image = e.target.files[0];
-
-        // send to server
+        // send this to server
         const formData = new FormData();
+        // append the image to formData
         formData.append('image', image, image.name);
         this.props.uploadImage(formData);
     }
 
     handleEditImage = () => {
+        // just click the input (we are doing this since we have hidden the actual input and covered it with a custom icon button)
         const fileInput = document.getElementById('profile-image-input');
         fileInput.click();
     };
@@ -184,7 +185,7 @@ class Profile extends Component {
                         >
                             <KeyboardReturn  />
                         </CustomIconButton>
-                    {/* Edit Profile */}
+                    {/* Edit Profile Button */}
                     <EditProfile />
                 </div>
             </Paper>) : (   // if not authenticated
@@ -204,7 +205,7 @@ class Profile extends Component {
             )) : <ProfileSkeleton />
 
 
-        // we will return profileComponent based on whether we are loading and/or authenticated
+        // we will return profileComponent based on whether we are loading and authenticated
         return profileComponent
     }
 }

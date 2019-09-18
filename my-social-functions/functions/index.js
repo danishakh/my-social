@@ -122,8 +122,8 @@ exports.onUserImageChange = functions.region('us-central1').firestore.document('
                     });
                     //return batch.commit();
                 })
+                // update the image beside all their
                 .then(() => {
-                    // update the image beside all their
                     return db.collection('comments')
                         .where('username', '==', change.before.data().username)
                         .get()         

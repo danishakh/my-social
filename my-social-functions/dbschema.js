@@ -64,5 +64,6 @@ let userDetails = {
             username: 'user2',
             postId: 'kjskocks1okn3123'
         }
-    ]
+    ],
+    notifications: []
 }

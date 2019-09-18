@@ -21,7 +21,7 @@ export default function(state = initialState, action) {
             return {
                 authenticated: true,
                 loading: false,
-                ...action.payload
+                ...action.payload   // fill up the credentials, likes, notifications from our API response
             };
         case LOADING_USER:
             return {

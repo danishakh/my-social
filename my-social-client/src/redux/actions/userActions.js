@@ -78,6 +78,14 @@ export const registerUser = (newUserData, history) => dispatch => {
         });
 }
 
+export const logoutUser = () => dispatch => {
+    // Delete token from localStorage
+    localStorage.removeItem('firebaseToken');
+    // Remove token from axios headers
+    delete axios.defaults.headers.common['Authorization'];
+    dispatch({ type: SET_UNAUTHENTICATED });
+}
+
 export const uploadImage = formData => dispatch => {
     dispatch({ type: LOADING_USER });
     axios.post('/user/image', formData)
@@ -94,14 +102,6 @@ export const editUserData = userData => dispatch => {
             dispatch(getLoggedInUserData());
         })
         .catch(err => console.error(err));
-}
-
-export const logoutUser = () => dispatch => {
-    // Delete token from localStorage
-    localStorage.removeItem('firebaseToken');
-    // Remove token from axios headers
-    delete axios.defaults.headers.common['Authorization'];
-    dispatch({ type: SET_UNAUTHENTICATED });
 }
 
 export const markNotificationsRead = notifIds => dispatch => {
