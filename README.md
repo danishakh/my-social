@@ -5,7 +5,7 @@ This is a completely server-less social media app which can be considered as a '
 ## Live Website: 
 [https://my-social-ff134.firebaseapp.com/](https://my-social-ff134.firebaseapp.com/)
 
-## Technologies
+## Technologies:
 ### BackEnd
 - Firebase Cloud Functions, Storage, Database, Hosting
 - Express
