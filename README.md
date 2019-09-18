@@ -2,11 +2,12 @@
 
 This is a completely server-less social media app which can be considered as a 'Twitter-Lite'.
 
-Link to deployed site: [https://my-social-ff134.firebaseapp.com/](https://my-social-ff134.firebaseapp.com/)
+## Live Website: 
+[https://my-social-ff134.firebaseapp.com/](https://my-social-ff134.firebaseapp.com/)
 
 ## Technologies
 ### BackEnd
-- Firebase Functions, Storage, Database, Hosting
+- Firebase Cloud Functions, Storage, Database, Hosting
 - Express
 - Busboy
 
